@@ -26,8 +26,8 @@ int main()
         DrawTexture(NavBar, 0, 0, RAYWHITE);
         DrawTexture(background, 0, 87, RAYWHITE);
         DrawTexture(blockBG, screenWidth / 2, 200, RAYWHITE);
-        DrawTexture(login, screenWidth / 2, 150, RAYWHITE);
-        DrawTexture(regis, screenWidth / 2, 250, RAYWHITE);
+        DrawTexture(login, screenWidth / 2 + 210, 365, RAYWHITE);
+        DrawTexture(regis, screenWidth / 2 + 300, 420, RAYWHITE);
         ClearBackground(RAYWHITE);
 
 
