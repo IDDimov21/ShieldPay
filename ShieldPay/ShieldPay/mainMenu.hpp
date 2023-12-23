@@ -4,4 +4,7 @@
 #include <string>
 
 int main();
-void Input();
+void InitApp();
+void DrawApp();
+void DrawTextBoxes();
+void HandleTextInput();
