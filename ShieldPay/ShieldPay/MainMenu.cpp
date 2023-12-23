@@ -1,21 +1,17 @@
 #include "mainMenu.hpp"
-using namespace std;
 
 const int screenWidth = 1100;
 const int screenHeight = 700;
 
 Texture2D NavBar, background, blockBG, login, regis;
-char text[21] = { 0 };
-int textSize = 0;
-bool isTextBoxFocused = false;
+char text1[21] = { 0 }; // Text for the first text box
+char text2[21] = { 0 }; // Text for the second text box
+int textSize1 = 0;
+int textSize2 = 0;
+bool isTextBox1Focused = false;
+bool isTextBox2Focused = false;
 int framesCounter = 0;
 bool cursorVisible = true;
-
-// Function prototypes
-void InitApp();
-void DrawApp();
-void DrawTextBox();
-void HandleTextInput();
 
 int main() {
     InitApp();
@@ -49,32 +45,55 @@ void DrawApp() {
     DrawTexture(login, screenWidth / 2 + 210, 365, RAYWHITE);
     DrawTexture(regis, screenWidth / 2 + 300, 420, RAYWHITE);
 
-    DrawTextBox();
+    DrawTextBoxes();
 
     EndDrawing();
 }
 
-void DrawTextBox() {
-    Rectangle textBox = { screenWidth / 2 + 180, screenHeight / 2 - 95, 240, 40 };
-    DrawRectangleRec(textBox, isTextBoxFocused ? SKYBLUE : LIGHTGRAY);
-    DrawRectangleLinesEx(textBox, 2, isTextBoxFocused ? DARKBLUE : DARKGRAY);
+void DrawTextBoxes() {
+    // Define the first text box
+    Rectangle textBox1 = { screenWidth / 2 + 180, screenHeight / 2 - 95, 240, 40 };
+    DrawRectangleRec(textBox1, isTextBox1Focused ? SKYBLUE : LIGHTGRAY);
+    DrawRectangleLinesEx(textBox1, 2, isTextBox1Focused ? DARKBLUE : DARKGRAY);
 
-    DrawText(text, screenWidth / 2 + 187, screenHeight / 2 - 85, 20, BLACK);
+    DrawText(text1, screenWidth / 2 + 187, screenHeight / 2 - 85, 20, BLACK);
 
-    if (isTextBoxFocused && cursorVisible) {
-        int cursorX = MeasureText(text, 20) + 20;
-        DrawLine(cursorX, 20, cursorX, 40, BLACK);
+    if (isTextBox1Focused && cursorVisible) {
+        int cursorX = screenWidth / 2 + 180 + MeasureText(text1, 20) + 20;
+        DrawLine(cursorX, screenHeight / 2 - 95, cursorX, screenHeight / 2 - 55, BLACK);
     }
-    if (CheckCollisionPointRec(GetMousePosition(), textBox)) {
+
+    if (CheckCollisionPointRec(GetMousePosition(), textBox1)) {
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            isTextBoxFocused = !isTextBoxFocused;
+            isTextBox1Focused = !isTextBox1Focused;
         }
     }
     else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        isTextBoxFocused = false;
+        isTextBox1Focused = false;
     }
 
-    if (isTextBoxFocused) {
+    // Define the second text box below the first one
+    Rectangle textBox2 = { screenWidth / 2 + 180, screenHeight / 2 - 45, 240, 40 };
+    DrawRectangleRec(textBox2, isTextBox2Focused ? SKYBLUE : LIGHTGRAY);
+    DrawRectangleLinesEx(textBox2, 2, isTextBox2Focused ? DARKBLUE : DARKGRAY);
+
+    DrawText(text2, screenWidth / 2 + 187, screenHeight / 2 - 35, 20, BLACK);
+
+    if (isTextBox2Focused && cursorVisible) {
+        int cursorX = screenWidth / 2 + 180 + MeasureText(text2, 20) + 20;
+        DrawLine(cursorX, screenHeight / 2 - 45, cursorX, screenHeight / 2 - 5, BLACK);
+    }
+
+    if (CheckCollisionPointRec(GetMousePosition(), textBox2)) {
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            isTextBox2Focused = !isTextBox2Focused;
+        }
+    }
+    else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        isTextBox2Focused = false;
+    }
+
+    if (isTextBox1Focused || isTextBox2Focused) {
         HandleTextInput();
     }
     else {
@@ -89,15 +108,24 @@ void HandleTextInput() {
         framesCounter = 0;
         cursorVisible = !cursorVisible;
     }
+
     int key = GetKeyPressed();
     if (key != 0) {
-        if ((key >= 32) && (key < 127) && (textSize < 16)) {
-            text[textSize] = (char)key;
-            textSize++;
+        if (isTextBox1Focused && (key >= 32) && (key < 127) && (textSize1 < 16)) {
+            text1[textSize1] = (char)key;
+            textSize1++;
         }
-        else if (key == KEY_BACKSPACE && textSize > 0) {
-            textSize--;
-            text[textSize] = '\0';
+        else if (isTextBox1Focused && key == KEY_BACKSPACE && textSize1 > 0) {
+            textSize1--;
+            text1[textSize1] = '\0';
+        }
+        else if (isTextBox2Focused && (key >= 32) && (key < 127) && (textSize2 < 16)) {
+            text2[textSize2] = (char)key;
+            textSize2++;
+        }
+        else if (isTextBox2Focused && key == KEY_BACKSPACE && textSize2 > 0) {
+            textSize2--;
+            text2[textSize2] = '\0';
         }
     }
 }
