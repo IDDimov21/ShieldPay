@@ -39,6 +39,7 @@ void InitApp() {
 void DrawApp() {
     BeginDrawing();
     ClearBackground(RAYWHITE);
+
     DrawTexture(NavBar, 0, 0, RAYWHITE);
     DrawTexture(background, 0, 87, RAYWHITE);
     DrawTexture(blockBG, screenWidth / 2, 200, RAYWHITE);
@@ -48,6 +49,34 @@ void DrawApp() {
     DrawTextBoxes();
 
     EndDrawing();
+}
+
+void HandleTextInput() {
+    framesCounter++;
+    if (framesCounter >= 30) {
+        framesCounter = 0;
+        cursorVisible = !cursorVisible;
+    }
+
+    int key = GetKeyPressed();
+    if (key != 0) {
+        if (isTextBox1Focused && (key >= 32) && (key < 127) && (textSize1 < 16)) {
+            text1[textSize1] = (char)key;
+            textSize1++;
+        }
+        else if (isTextBox1Focused && key == KEY_BACKSPACE && textSize1 > 0) {
+            textSize1--;
+            text1[textSize1] = '\0';
+        }
+        else if (isTextBox2Focused && (key >= 32) && (key < 127) && (textSize2 < 16)) {
+            text2[textSize2] = (char)key;
+            textSize2++;
+        }
+        else if (isTextBox2Focused && key == KEY_BACKSPACE && textSize2 > 0) {
+            textSize2--;
+            text2[textSize2] = '\0';
+        }
+    }
 }
 
 void DrawTextBoxes() {
@@ -102,30 +131,3 @@ void DrawTextBoxes() {
     }
 }
 
-void HandleTextInput() {
-    framesCounter++;
-    if (framesCounter >= 30) {
-        framesCounter = 0;
-        cursorVisible = !cursorVisible;
-    }
-
-    int key = GetKeyPressed();
-    if (key != 0) {
-        if (isTextBox1Focused && (key >= 32) && (key < 127) && (textSize1 < 16)) {
-            text1[textSize1] = (char)key;
-            textSize1++;
-        }
-        else if (isTextBox1Focused && key == KEY_BACKSPACE && textSize1 > 0) {
-            textSize1--;
-            text1[textSize1] = '\0';
-        }
-        else if (isTextBox2Focused && (key >= 32) && (key < 127) && (textSize2 < 16)) {
-            text2[textSize2] = (char)key;
-            textSize2++;
-        }
-        else if (isTextBox2Focused && key == KEY_BACKSPACE && textSize2 > 0) {
-            textSize2--;
-            text2[textSize2] = '\0';
-        }
-    }
-}
