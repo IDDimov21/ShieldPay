@@ -13,17 +13,6 @@ bool isTextBox2Focused = false;
 int framesCounter = 0;
 bool cursorVisible = true;
 
-int main() {
-    InitApp();
-
-    while (!WindowShouldClose()) {
-        DrawApp();
-    }
-
-    CloseWindow();
-    return 0;
-}
-
 void InitApp() {
     InitWindow(screenWidth, screenHeight, "ShieldPay");
 
@@ -34,21 +23,6 @@ void InitApp() {
     regis = LoadTexture("Images/register.png");
 
     SetTargetFPS(60);
-}
-
-void DrawApp() {
-    BeginDrawing();
-    ClearBackground(RAYWHITE);
-
-    DrawTexture(NavBar, 0, 0, RAYWHITE);
-    DrawTexture(background, 0, 87, RAYWHITE);
-    DrawTexture(blockBG, screenWidth / 2, 200, RAYWHITE);
-    DrawTexture(login, screenWidth / 2 + 210, 365, RAYWHITE);
-    DrawTexture(regis, screenWidth / 2 + 300, 420, RAYWHITE);
-
-    DrawTextBoxes();
-
-    EndDrawing();
 }
 
 void HandleTextInput() {
@@ -79,6 +53,8 @@ void HandleTextInput() {
     }
 }
 
+
+
 void DrawTextBoxes() {
     // Define the first text box
     Rectangle textBox1 = { screenWidth / 2 + 180, screenHeight / 2 - 95, 240, 40 };
@@ -86,10 +62,10 @@ void DrawTextBoxes() {
     DrawRectangleLinesEx(textBox1, 2, isTextBox1Focused ? DARKBLUE : DARKGRAY);
 
     DrawText(text1, screenWidth / 2 + 187, screenHeight / 2 - 85, 20, BLACK);
-
+    DrawText("Username: ", screenWidth / 2 + 187, screenHeight / 2 - 85)
     if (isTextBox1Focused && cursorVisible) {
         int cursorX = screenWidth / 2 + 180 + MeasureText(text1, 20) + 20;
-        DrawLine(cursorX, screenHeight / 2 - 95, cursorX, screenHeight / 2 - 55, BLACK);
+        DrawLine(cursorX - 10, screenHeight / 2 - 85, cursorX - 10, screenHeight / 2 - 68, BLACK);
     }
 
     if (CheckCollisionPointRec(GetMousePosition(), textBox1)) {
@@ -110,7 +86,7 @@ void DrawTextBoxes() {
 
     if (isTextBox2Focused && cursorVisible) {
         int cursorX = screenWidth / 2 + 180 + MeasureText(text2, 20) + 20;
-        DrawLine(cursorX, screenHeight / 2 - 45, cursorX, screenHeight / 2 - 5, BLACK);
+        DrawLine(cursorX - 10, screenHeight / 2 - 35, cursorX - 10, screenHeight / 2 - 15, BLACK);
     }
 
     if (CheckCollisionPointRec(GetMousePosition(), textBox2)) {
@@ -130,4 +106,34 @@ void DrawTextBoxes() {
         cursorVisible = true;
     }
 }
+
+void DrawApp() {
+    BeginDrawing();
+    ClearBackground(RAYWHITE);
+
+    DrawTexture(NavBar, 0, 0, RAYWHITE);
+    DrawTexture(background, 0, 87, RAYWHITE);
+    DrawTexture(blockBG, screenWidth / 2, 200, RAYWHITE);
+    DrawTexture(login, screenWidth / 2 + 210, 365, RAYWHITE);
+    DrawTexture(regis, screenWidth / 2 + 300, 420, RAYWHITE);
+
+    DrawTextBoxes();
+
+    EndDrawing();
+}
+
+int main() {
+    InitApp();
+
+    while (!WindowShouldClose()) {
+        DrawApp();
+    }
+
+    CloseWindow();
+    return 0;
+}
+
+
+
+
 
