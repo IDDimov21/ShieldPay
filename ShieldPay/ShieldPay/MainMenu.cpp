@@ -2,20 +2,36 @@
 
 const int screenWidth = 1100;
 const int screenHeight = 700;
-
+Rectangle Login = { screenWidth / 2 + 210, 365, 170, 45 };
 Texture2D NavBar, background, blockBG, login, regis;
 char text1[21] = { 0 }; // Text for the first text box
 char text2[21] = { 0 }; // Text for the second text box
-int textSize1 = 0;
-int textSize2 = 0;
-bool isTextBox1Focused = false;
-bool isTextBox2Focused = false;
+int textSize1 = 0, textSize2 = 0;
+bool isTextBox1Focused = false, isTextBox2Focused = false;
 int framesCounter = 0;
 bool cursorVisible = true;
-string username;
-string password;
-fstream Usernames;
-fstream Passwords;
+bool loginPressed = false;
+string username, password;
+fstream Usernames, Passwords;
+
+void isRecPressed(Rectangle rec) {
+    if (CheckCollisionPointRec(GetMousePosition(), rec)) {
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            loginPressed = true;
+        }
+    }
+}
+
+void WriteFiles() {
+    Usernames.open("Data/Usernames.txt", ios::out);
+    Passwords.open("Data/Passwords.txt", ios::out);
+    if (Usernames.is_open() && Passwords.is_open() && loginPressed) {
+        Usernames << username << endl;
+        Passwords << password << endl;
+        Usernames.close();
+        Passwords.close();
+    }
+}
 
 void InitApp() {
     InitWindow(screenWidth, screenHeight, "ShieldPay");
@@ -64,7 +80,6 @@ void HandleTextInput() {
 }
 
 
-
 void DrawTextBoxes() {
     // Define the first text box
     Rectangle textBox1 = { screenWidth / 2 + 180, screenHeight / 2 - 95, 240, 40 };
@@ -97,7 +112,7 @@ void DrawTextBoxes() {
     DrawRectangleLinesEx(textBox2, 2, isTextBox2Focused ? DARKBLUE : DARKGRAY);
 
     DrawText(text2, screenWidth / 2 + 187, screenHeight / 2 - 35, 20, BLACK);
-
+    DrawText("Password: ", screenWidth / 2 + 55, screenHeight / 2 - 35, 20, BLACK);
     if (isTextBox2Focused && cursorVisible) {
         int cursorX = screenWidth / 2 + 180 + MeasureText(text2, 20) + 20;
         DrawLine(cursorX - 10, screenHeight / 2 - 35, cursorX - 10, screenHeight / 2 - 15, BLACK);
@@ -134,15 +149,21 @@ void DrawApp() {
     DrawTexture(blockBG, screenWidth / 2, 200, RAYWHITE);
     DrawTexture(login, screenWidth / 2 + 210, 365, RAYWHITE);
     DrawTexture(regis, screenWidth / 2 + 300, 420, RAYWHITE);
-
     DrawTextBoxes();
-
+    if ((loginPressed && textSize1 == 0) || (loginPressed && textSize2 == 0)) {
+        cout << "invalid credentials";
+        loginPressed = false;
+    }
+    else if (loginPressed) {
+        WriteFiles();
+    }
     EndDrawing();
 }
 
 int main() {
     InitApp();
     while (!WindowShouldClose()) {
+        isRecPressed(Login);
         DrawApp();
     }
 
