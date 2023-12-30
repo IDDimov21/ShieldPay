@@ -12,6 +12,10 @@ bool isTextBox1Focused = false;
 bool isTextBox2Focused = false;
 int framesCounter = 0;
 bool cursorVisible = true;
+string username;
+string password;
+fstream Usernames;
+fstream Passwords;
 
 void InitApp() {
     InitWindow(screenWidth, screenHeight, "ShieldPay");
@@ -34,23 +38,29 @@ void HandleTextInput() {
 
     int key = GetKeyPressed();
     if (key != 0) {
+
         if (isTextBox1Focused && (key >= 32) && (key < 127) && (textSize1 < 16)) {
             text1[textSize1] = (char)key;
             textSize1++;
+            
         }
         else if (isTextBox1Focused && key == KEY_BACKSPACE && textSize1 > 0) {
             textSize1--;
             text1[textSize1] = '\0';
+            
         }
         else if (isTextBox2Focused && (key >= 32) && (key < 127) && (textSize2 < 16)) {
             text2[textSize2] = (char)key;
             textSize2++;
+            
         }
         else if (isTextBox2Focused && key == KEY_BACKSPACE && textSize2 > 0) {
             textSize2--;
             text2[textSize2] = '\0';
+            
         }
     }
+    
 }
 
 
@@ -62,7 +72,7 @@ void DrawTextBoxes() {
     DrawRectangleLinesEx(textBox1, 2, isTextBox1Focused ? DARKBLUE : DARKGRAY);
 
     DrawText(text1, screenWidth / 2 + 187, screenHeight / 2 - 85, 20, BLACK);
-    DrawText("Username: ", screenWidth / 2 + 187, screenHeight / 2 - 85)
+    DrawText("Username: ", screenWidth / 2 + 55, screenHeight / 2 - 85, 20, BLACK);
     if (isTextBox1Focused && cursorVisible) {
         int cursorX = screenWidth / 2 + 180 + MeasureText(text1, 20) + 20;
         DrawLine(cursorX - 10, screenHeight / 2 - 85, cursorX - 10, screenHeight / 2 - 68, BLACK);
@@ -71,10 +81,14 @@ void DrawTextBoxes() {
     if (CheckCollisionPointRec(GetMousePosition(), textBox1)) {
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             isTextBox1Focused = !isTextBox1Focused;
+            string username(begin(text1), end(text1));
+            cout << username << endl;
         }
     }
     else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         isTextBox1Focused = false;
+        string username(begin(text1), end(text1));
+        cout << username << endl;
     }
 
     // Define the second text box below the first one
@@ -92,10 +106,14 @@ void DrawTextBoxes() {
     if (CheckCollisionPointRec(GetMousePosition(), textBox2)) {
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             isTextBox2Focused = !isTextBox2Focused;
+            string password(begin(text2), end(text2));
+            cout << password << endl;
         }
     }
     else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         isTextBox2Focused = false;
+        string password(begin(text2), end(text2));
+        cout << password << endl;
     }
 
     if (isTextBox1Focused || isTextBox2Focused) {
@@ -124,7 +142,6 @@ void DrawApp() {
 
 int main() {
     InitApp();
-
     while (!WindowShouldClose()) {
         DrawApp();
     }
