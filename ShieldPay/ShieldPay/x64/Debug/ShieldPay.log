@@ -21,4 +21,4 @@ raylib.lib(egl_context.c.obj) : warning LNK4099: PDB '' was not found with 'rayl
 raylib.lib(osmesa_context.c.obj) : warning LNK4099: PDB '' was not found with 'raylib.lib(osmesa_context.c.obj)' or at ''; linking object as if no debug info
 raylib.lib(win32_module.c.obj) : warning LNK4099: PDB '' was not found with 'raylib.lib(win32_module.c.obj)' or at ''; linking object as if no debug info
 raylib.lib(win32_joystick.c.obj) : warning LNK4099: PDB '' was not found with 'raylib.lib(win32_joystick.c.obj)' or at ''; linking object as if no debug info
-  ShieldPay.vcxproj -> D:\ShieldPay\ShieldPay\x64\Debug\ShieldPay.exe
+  ShieldPay.vcxproj -> F:\ShieldPay\ShieldPay\x64\Debug\ShieldPay.exe

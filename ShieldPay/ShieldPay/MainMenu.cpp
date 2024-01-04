@@ -82,14 +82,14 @@ void HandleTextInput() {
 
 void DrawTextBoxes() {
     // Define the first text box
-    Rectangle textBox1 = { screenWidth / 2 + 180, screenHeight / 2 - 95, 240, 40 };
+    Rectangle textBox1 = { screenWidth / 2 - 120, screenHeight / 2 - 95, 240, 40 };
     DrawRectangleRec(textBox1, isTextBox1Focused ? SKYBLUE : LIGHTGRAY);
     DrawRectangleLinesEx(textBox1, 2, isTextBox1Focused ? DARKBLUE : DARKGRAY);
 
-    DrawText(text1, screenWidth / 2 + 187, screenHeight / 2 - 85, 20, BLACK);
-    DrawText("Username: ", screenWidth / 2 + 55, screenHeight / 2 - 85, 20, BLACK);
+    DrawText("Username: ", screenWidth / 2 + -120, screenHeight / 2 - 125, 20, BLACK);
+    DrawText(text1, screenWidth / 2 - 113, screenHeight / 2 - 85, 20, BLACK);
     if (isTextBox1Focused && cursorVisible) {
-        int cursorX = screenWidth / 2 + 180 + MeasureText(text1, 20) + 20;
+        int cursorX = screenWidth / 2 - 120 + MeasureText(text1, 20) + 20;
         DrawLine(cursorX - 10, screenHeight / 2 - 85, cursorX - 10, screenHeight / 2 - 68, BLACK);
     }
 
@@ -107,14 +107,14 @@ void DrawTextBoxes() {
     }
 
     // Define the second text box below the first one
-    Rectangle textBox2 = { screenWidth / 2 + 180, screenHeight / 2 - 45, 240, 40 };
+    Rectangle textBox2 = { screenWidth / 2 - 120, screenHeight / 2 - 10, 240, 40 };
     DrawRectangleRec(textBox2, isTextBox2Focused ? SKYBLUE : LIGHTGRAY);
     DrawRectangleLinesEx(textBox2, 2, isTextBox2Focused ? DARKBLUE : DARKGRAY);
 
-    DrawText(text2, screenWidth / 2 + 187, screenHeight / 2 - 35, 20, BLACK);
-    DrawText("Password: ", screenWidth / 2 + 55, screenHeight / 2 - 35, 20, BLACK);
+    DrawText("Password: ", screenWidth / 2 - 119, screenHeight / 2 - 35, 20, BLACK);
+    DrawText(text2, screenWidth / 2 - 113, screenHeight / 2 - 35, 20, BLACK);
     if (isTextBox2Focused && cursorVisible) {
-        int cursorX = screenWidth / 2 + 180 + MeasureText(text2, 20) + 20;
+        int cursorX = screenWidth / 2 - 120 + MeasureText(text2, 20) + 20;
         DrawLine(cursorX - 10, screenHeight / 2 - 35, cursorX - 10, screenHeight / 2 - 15, BLACK);
     }
 
@@ -145,8 +145,8 @@ void DrawApp() {
     ClearBackground(RAYWHITE);
 
     DrawTexture(NavBar, 0, 0, RAYWHITE);
-    DrawTexture(background, 0, 87, RAYWHITE);
-    DrawTexture(blockBG, screenWidth / 2, 200, RAYWHITE);
+    DrawTexture(background, 0, 50, RAYWHITE);
+    DrawTexture(blockBG, screenWidth / 2 - blockBG.width / 2, screenHeight / 2 - blockBG.height / 2, RAYWHITE);
     DrawTexture(login, screenWidth / 2 + 210, 365, RAYWHITE);
     DrawTexture(regis, screenWidth / 2 + 300, 420, RAYWHITE);
     DrawTextBoxes();
