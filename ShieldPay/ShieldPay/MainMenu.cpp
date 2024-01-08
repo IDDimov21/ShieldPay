@@ -1,4 +1,5 @@
 #include "mainMenu.hpp"
+using namespace std;
 
 const int screenWidth = 1100;
 const int screenHeight = 700;
@@ -13,23 +14,13 @@ bool cursorVisible = true;
 bool loginPressed = false;
 string username, password;
 fstream Usernames, Passwords;
+string dataFolderPath = "F:/ShieldPay/ShieldPay/ShieldPay/Data";
 
 void isRecPressed(Rectangle rec) {
     if (CheckCollisionPointRec(GetMousePosition(), rec)) {
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             loginPressed = true;
         }
-    }
-}
-
-void WriteFiles() {
-    Usernames.open("Data/Usernames.txt", ios::out);
-    Passwords.open("Data/Passwords.txt", ios::out);
-    if (Usernames.is_open() && Passwords.is_open() && loginPressed) {
-        Usernames << username << endl;
-        Passwords << password << endl;
-        Usernames.close();
-        Passwords.close();
     }
 }
 
@@ -58,27 +49,74 @@ void HandleTextInput() {
         if (isTextBox1Focused && (key >= 32) && (key < 127) && (textSize1 < 16)) {
             text1[textSize1] = (char)key;
             textSize1++;
-
+            text1[textSize1 - 1] = tolower(text1[textSize1 - 1]);
         }
         else if (isTextBox1Focused && key == KEY_BACKSPACE && textSize1 > 0) {
             textSize1--;
             text1[textSize1] = '\0';
-
+            text1[textSize1 - 1] = tolower(text1[textSize1 - 1]);
         }
         else if (isTextBox2Focused && (key >= 32) && (key < 127) && (textSize2 < 16)) {
             text2[textSize2] = (char)key;
             textSize2++;
-
+            text2[textSize2 - 1] = tolower(text2[textSize2 - 1]);
         }
         else if (isTextBox2Focused && key == KEY_BACKSPACE && textSize2 > 0) {
             textSize2--;
             text2[textSize2] = '\0';
+            text2[textSize2 - 1] = tolower(text2[textSize2 - 1]);
+        }
+    }
+}
 
+void WriteFiles() {
+    // Open files in append mode to keep existing data
+    Usernames.open(dataFolderPath + "/usernames.txt", ios::out | ios::app);
+    Passwords.open(dataFolderPath + "/passwords.txt", ios::out | ios::app);
+
+    if (Usernames.is_open() && Passwords.is_open() && loginPressed) {
+        Usernames << username << endl;
+        Passwords << password << endl;
+        Usernames.close();  // Close immediately after writing
+        Passwords.close();  // Close immediately after writing
+    }
+}
+
+void ReadFiles() {
+    // Open files for reading
+    Usernames.open(dataFolderPath + "/usernames.txt", ios::in);
+    Passwords.open(dataFolderPath + "/passwords.txt", ios::in);
+
+    if (!Usernames.is_open() || !Passwords.is_open()) {
+        cerr << "Error opening username or password file." << endl;
+        // Handle error appropriately
+    }
+}
+
+bool CheckCredentials() {
+    ReadFiles();
+
+    string usernameFromFile, passwordFromFile;
+
+    // Read usernames and passwords and compare with entered credentials
+    while (getline(Usernames, usernameFromFile) && getline(Passwords, passwordFromFile)) {
+        cout << "Entered Username: " << username << endl;
+        cout << "Entered Password: " << password << endl;
+        cout << "Stored Username: " << usernameFromFile << endl;
+        cout << "Stored Password: " << passwordFromFile << endl;
+
+        if (usernameFromFile == username && passwordFromFile == password) {
+            Usernames.close();
+            Passwords.close();
+            return true; // Credentials match
         }
     }
 
-}
+    Usernames.close();
+    Passwords.close();
 
+    return false; // Credentials do not match
+}
 
 void DrawTextBoxes() {
     // Define the first text box
@@ -152,13 +190,22 @@ void DrawApp() {
     DrawTexture(login, screenWidth / 2 + 210, 365, RAYWHITE);
     DrawTexture(regis, screenWidth / 2 + 300, 420, RAYWHITE);
     DrawTextBoxes();
-    if ((loginPressed && textSize1 == 0) || (loginPressed && textSize2 == 0)) {
-        cout << "invalid credentials";
+
+    if (loginPressed) {
+        if ((textSize1 == 0) || (textSize2 == 0)) {
+            cout << "Invalid credentials: Empty fields" << endl;
+        }
+        else {
+            if (CheckCredentials()) {
+                cout << "Login successful!" << endl;
+            }
+            else {
+                cout << "Invalid credentials: Username or password incorrect" << endl;
+            }
+        }
         loginPressed = false;
     }
-    else if (loginPressed) {
-        WriteFiles();
-    }
+
     EndDrawing();
 }
 

@@ -1,8 +1,11 @@
 #pragma once
 #include <iostream>
 #include "raylib.h"
-#include <string>
+#include <iostream>
 #include <fstream>
+#include <string>
+#include <vector>
+#include <algorithm>
 using namespace std;
 int main();
 void InitApp();
