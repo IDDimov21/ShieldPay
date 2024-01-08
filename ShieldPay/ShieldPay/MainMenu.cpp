@@ -50,21 +50,25 @@ void HandleTextInput() {
             text1[textSize1] = (char)key;
             textSize1++;
             text1[textSize1 - 1] = tolower(text1[textSize1 - 1]);
+            username = std::string(text1);
         }
         else if (isTextBox1Focused && key == KEY_BACKSPACE && textSize1 > 0) {
             textSize1--;
             text1[textSize1] = '\0';
             text1[textSize1 - 1] = tolower(text1[textSize1 - 1]);
+            username = std::string(text1);
         }
         else if (isTextBox2Focused && (key >= 32) && (key < 127) && (textSize2 < 16)) {
             text2[textSize2] = (char)key;
             textSize2++;
             text2[textSize2 - 1] = tolower(text2[textSize2 - 1]);
+            password = std::string(text2);
         }
         else if (isTextBox2Focused && key == KEY_BACKSPACE && textSize2 > 0) {
             textSize2--;
             text2[textSize2] = '\0';
             text2[textSize2 - 1] = tolower(text2[textSize2 - 1]);
+            password = std::string(text2);
         }
     }
 }
@@ -89,7 +93,6 @@ void ReadFiles() {
 
     if (!Usernames.is_open() || !Passwords.is_open()) {
         cerr << "Error opening username or password file." << endl;
-        // Handle error appropriately
     }
 }
 
