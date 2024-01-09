@@ -3,7 +3,7 @@ using namespace std;
 
 const int screenWidth = 1100;
 const int screenHeight = 700;
-Rectangle Login = { screenWidth / 2 + 210, 365, 170, 45 };
+Rectangle Login = { screenWidth / 2 - 80, 400, 170, 45 }, Register = { screenWidth / 2 - 50, 450, 160, 40 };
 Texture2D NavBar, background, blockBG, login, regis;
 char text1[21] = { 0 }; // Text for the first text box
 char text2[21] = { 0 }; // Text for the second text box
@@ -11,15 +11,15 @@ int textSize1 = 0, textSize2 = 0;
 bool isTextBox1Focused = false, isTextBox2Focused = false;
 int framesCounter = 0;
 bool cursorVisible = true;
-bool loginPressed = false;
+bool loginPressed = false, registerPressed = false;
 string username, password;
 fstream Usernames, Passwords;
-string dataFolderPath = "F:/ShieldPay/ShieldPay/ShieldPay/Data";
+string dataFolderPath = "D:/ShieldPay/ShieldPay/ShieldPay/Data";
 
-void isRecPressed(Rectangle rec) {
+void isRecPressed(Rectangle rec, bool check) {
     if (CheckCollisionPointRec(GetMousePosition(), rec)) {
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            loginPressed = true;
+            check = true;
         }
     }
 }
@@ -73,19 +73,6 @@ void HandleTextInput() {
     }
 }
 
-void WriteFiles() {
-    // Open files in append mode to keep existing data
-    Usernames.open(dataFolderPath + "/usernames.txt", ios::out | ios::app);
-    Passwords.open(dataFolderPath + "/passwords.txt", ios::out | ios::app);
-
-    if (Usernames.is_open() && Passwords.is_open() && loginPressed) {
-        Usernames << username << endl;
-        Passwords << password << endl;
-        Usernames.close();  // Close immediately after writing
-        Passwords.close();  // Close immediately after writing
-    }
-}
-
 void ReadFiles() {
     // Open files for reading
     Usernames.open(dataFolderPath + "/usernames.txt", ios::in);
@@ -96,6 +83,20 @@ void ReadFiles() {
     }
 }
 
+void WriteFiles() {
+    // Open files in append mode to keep existing data
+    Usernames.open(dataFolderPath + "/usernames.txt", ios::out | ios::app);
+    Passwords.open(dataFolderPath + "/passwords.txt", ios::out | ios::app);
+
+    if (Usernames.is_open() && Passwords.is_open() && registerPressed) {
+        Usernames << username << endl;
+        Passwords << password << endl;
+        Usernames.close();  // Close immediately after writing
+        Passwords.close();  // Close immediately after writing
+    }
+}
+
+
 bool CheckCredentials() {
     ReadFiles();
 
@@ -105,8 +106,6 @@ bool CheckCredentials() {
     while (getline(Usernames, usernameFromFile) && getline(Passwords, passwordFromFile)) {
         cout << "Entered Username: " << username << endl;
         cout << "Entered Password: " << password << endl;
-        cout << "Stored Username: " << usernameFromFile << endl;
-        cout << "Stored Password: " << passwordFromFile << endl;
 
         if (usernameFromFile == username && passwordFromFile == password) {
             Usernames.close();
@@ -138,13 +137,11 @@ void DrawTextBoxes() {
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             isTextBox1Focused = !isTextBox1Focused;
             string username(begin(text1), end(text1));
-            cout << username << endl;
         }
     }
     else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         isTextBox1Focused = false;
         string username(begin(text1), end(text1));
-        cout << username << endl;
     }
 
     // Define the second text box below the first one
@@ -165,13 +162,11 @@ void DrawTextBoxes() {
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             isTextBox2Focused = !isTextBox2Focused;
             string password(begin(text2), end(text2));
-            cout << password << endl;
         }
     }
     else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         isTextBox2Focused = false;
         string password(begin(text2), end(text2));
-        cout << password << endl;
     }
 
     if (isTextBox1Focused || isTextBox2Focused) {
@@ -190,8 +185,8 @@ void DrawApp() {
     DrawTexture(NavBar, -10, 0, RAYWHITE);
     DrawTexture(background, 0, 50, RAYWHITE);
     DrawTexture(blockBG, screenWidth / 2 - blockBG.width / 2, screenHeight / 2 - blockBG.height / 2, RAYWHITE);
-    DrawTexture(login, screenWidth / 2 + 210, 365, RAYWHITE);
-    DrawTexture(regis, screenWidth / 2 + 300, 420, RAYWHITE);
+    DrawTexture(login, screenWidth / 2 - 80, 400, RAYWHITE);
+    DrawTexture(regis, screenWidth / 2 - 50, 450, RAYWHITE);
     DrawTextBoxes();
 
     if (loginPressed) {
@@ -215,7 +210,8 @@ void DrawApp() {
 int main() {
     InitApp();
     while (!WindowShouldClose()) {
-        isRecPressed(Login);
+        isRecPressed(Login, loginPressed);
+        isRecPressed(Register, registerPressed);
         DrawApp();
     }
 
