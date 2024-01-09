@@ -5,8 +5,8 @@ const int screenWidth = 1100;
 const int screenHeight = 700;
 Rectangle Login = { screenWidth / 2 - 80, 400, 170, 45 }, Register = { screenWidth / 2 - 50, 450, 160, 40 };
 Texture2D NavBar, background, blockBG, login, regis;
-char text1[21] = { 0 }; // Text for the first text box
-char text2[21] = { 0 }; // Text for the second text box
+char text1[25] = { 0 }; // Text for the first text box
+char text2[25] = { 0 }; // Text for the second text box
 int textSize1 = 0, textSize2 = 0;
 bool isTextBox1Focused = false, isTextBox2Focused = false;
 int framesCounter = 0;
@@ -16,7 +16,7 @@ string username, password;
 fstream Usernames, Passwords;
 string dataFolderPath = "D:/ShieldPay/ShieldPay/ShieldPay/Data";
 
-void isRecPressed(Rectangle rec, bool check) {
+void isRecPressed(Rectangle rec, bool& check) {
     if (CheckCollisionPointRec(GetMousePosition(), rec)) {
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             check = true;
@@ -46,7 +46,7 @@ void HandleTextInput() {
     int key = GetKeyPressed();
     if (key != 0) {
 
-        if (isTextBox1Focused && (key >= 32) && (key < 127) && (textSize1 < 16)) {
+        if (isTextBox1Focused && (key >= 32) && (key < 127) && (textSize1 < 19)) {
             text1[textSize1] = (char)key;
             textSize1++;
             text1[textSize1 - 1] = tolower(text1[textSize1 - 1]);
@@ -58,7 +58,7 @@ void HandleTextInput() {
             text1[textSize1 - 1] = tolower(text1[textSize1 - 1]);
             username = std::string(text1);
         }
-        else if (isTextBox2Focused && (key >= 32) && (key < 127) && (textSize2 < 16)) {
+        else if (isTextBox2Focused && (key >= 32) && (key < 127) && (textSize2 < 19)) {
             text2[textSize2] = (char)key;
             textSize2++;
             text2[textSize2 - 1] = tolower(text2[textSize2 - 1]);
@@ -85,14 +85,16 @@ void ReadFiles() {
 
 void WriteFiles() {
     // Open files in append mode to keep existing data
-    Usernames.open(dataFolderPath + "/usernames.txt", ios::out | ios::app);
-    Passwords.open(dataFolderPath + "/passwords.txt", ios::out | ios::app);
+    Usernames.open(dataFolderPath + "/usernames.txt", ios::app);
+    Passwords.open(dataFolderPath + "/passwords.txt", ios::app);
 
     if (Usernames.is_open() && Passwords.is_open() && registerPressed) {
         Usernames << username << endl;
         Passwords << password << endl;
+        cout << "Your account has been registered sucessfully!!" << endl;
         Usernames.close();  // Close immediately after writing
         Passwords.close();  // Close immediately after writing
+        registerPressed = false;
     }
 }
 
@@ -150,7 +152,7 @@ void DrawTextBoxes() {
     DrawRectangleLinesEx(textBox2, 2.5, isTextBox2Focused ? DARKGRAY : DARKGRAY);
 
     DrawText("Password: ", screenWidth / 2 - 120, screenHeight / 2 - 35, 20, WHITE);
-    DrawText(text2, screenWidth / 2 - 113, screenHeight / 2 - 4, 20, WHITE);
+    DrawText(text2, screenWidth / 2 - 113, screenHeight / 2 - 4, 20, BLACK);
     if (isTextBox2Focused && cursorVisible) {
         int cursorX = screenWidth / 2 - 120 + MeasureText(text2, 20) + 20;
 
@@ -187,6 +189,8 @@ void DrawApp() {
     DrawTexture(blockBG, screenWidth / 2 - blockBG.width / 2, screenHeight / 2 - blockBG.height / 2, RAYWHITE);
     DrawTexture(login, screenWidth / 2 - 80, 400, RAYWHITE);
     DrawTexture(regis, screenWidth / 2 - 50, 450, RAYWHITE);
+    //DrawRectangle(screenWidth / 2 - 80, 400, 170, 45, RED);
+    //DrawRectangle(screenWidth / 2 - 50, 450, 160, 40, GREEN);
     DrawTextBoxes();
 
     if (loginPressed) {
@@ -203,6 +207,10 @@ void DrawApp() {
         }
         loginPressed = false;
     }
+    if (registerPressed) {
+        WriteFiles();
+    }
+
 
     EndDrawing();
 }
