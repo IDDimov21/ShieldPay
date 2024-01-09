@@ -12,7 +12,7 @@ bool isTextBox1Focused = false, isTextBox2Focused = false;
 int framesCounter = 0;
 bool cursorVisible = true;
 bool loginPressed = false, registerPressed = false;
-string username, password;
+string username, password, usernameFromFile, passwordFromFile, USINGuser, USINGpass;
 fstream Usernames, Passwords;
 string dataFolderPath = "D:/ShieldPay/ShieldPay/ShieldPay/Data";
 
@@ -83,6 +83,30 @@ void ReadFiles() {
     }
 }
 
+
+bool CheckCredentials() {
+    ReadFiles();
+
+    // Read usernames and passwords and compare with entered credentials
+    while (getline(Usernames, usernameFromFile) && getline(Passwords, passwordFromFile)) {
+        cout << "Entered Username: " << username << endl;
+        cout << "Entered Password: " << password << endl;
+
+        if (usernameFromFile == username && passwordFromFile == password) {
+            USINGuser = username;
+            USINGpass = password;
+            Usernames.close();
+            Passwords.close();
+            return true; // Credentials match
+        }
+    }
+
+    Usernames.close();
+    Passwords.close();
+
+    return false; // Credentials do not match
+}
+
 void WriteFiles() {
     // Open files in append mode to keep existing data
     Usernames.open(dataFolderPath + "/usernames.txt", ios::app);
@@ -96,30 +120,6 @@ void WriteFiles() {
         Passwords.close();  // Close immediately after writing
         registerPressed = false;
     }
-}
-
-
-bool CheckCredentials() {
-    ReadFiles();
-
-    string usernameFromFile, passwordFromFile;
-
-    // Read usernames and passwords and compare with entered credentials
-    while (getline(Usernames, usernameFromFile) && getline(Passwords, passwordFromFile)) {
-        cout << "Entered Username: " << username << endl;
-        cout << "Entered Password: " << password << endl;
-
-        if (usernameFromFile == username && passwordFromFile == password) {
-            Usernames.close();
-            Passwords.close();
-            return true; // Credentials match
-        }
-    }
-
-    Usernames.close();
-    Passwords.close();
-
-    return false; // Credentials do not match
 }
 
 void DrawTextBoxes() {
@@ -200,6 +200,7 @@ void DrawApp() {
         else {
             if (CheckCredentials()) {
                 cout << "Login successful!" << endl;
+                home();
             }
             else {
                 cout << "Invalid credentials: Username or password incorrect" << endl;

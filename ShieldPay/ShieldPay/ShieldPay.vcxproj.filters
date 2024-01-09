@@ -26,5 +26,8 @@
     <ClInclude Include="mainMenu.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="home.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
