@@ -12,3 +12,6 @@ void InitApp();
 void DrawApp();
 void DrawTextBoxes();
 void HandleTextInput();
+void isRecPressed(Rectangle rec, bool& check);
+void ReadFiles();
+void WriteFiles();
