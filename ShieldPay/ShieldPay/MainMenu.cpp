@@ -12,10 +12,10 @@ bool isTextBox1Focused = false, isTextBox2Focused = false;
 int framesCounter = 0;
 double USINGbalance;
 bool cursorVisible = true;
-bool loginPressed = false, registerPressed = false;
+bool loginPressed = false, registerPressed = false, flag = false;
 string username, password, usernameFromFile, passwordFromFile, USINGuser, USINGpass;
 fstream Usernames, Passwords, Balances;
-string dataFolderPath = "F:/ShieldPay/ShieldPay/ShieldPay/Data";
+string dataFolderPath = "D:/ShieldPay/ShieldPay/ShieldPay/Data";
 
 void isRecPressed(Rectangle rec, bool& check) {
     if (CheckCollisionPointRec(GetMousePosition(), rec)) {
@@ -196,6 +196,38 @@ void DrawTextBoxes() {
     }
 }
 
+void UnloadTexts() {
+    UnloadTexture(NavBar);
+    UnloadTexture(background);
+    UnloadTexture(blockBG);
+    UnloadTexture(login);
+    UnloadTexture(regis);
+}
+
+void loginAndregisterProcess() {
+    if (loginPressed) {
+        if ((textSize1 == 0) || (textSize2 == 0)) {
+            cout << "Invalid credentials: Empty fields" << endl;
+        }
+        else {
+            if (CheckCredentials()) {
+                cout << "Login successful! Welcome, " << USINGuser << ". Your balance: " << USINGbalance << endl;
+                UnloadTexts();
+                home();
+            }
+            else {
+                cout << "Invalid credentials: Username or password incorrect" << endl;
+            }
+        }
+        loginPressed = false;
+    }
+    if (registerPressed) {
+        WriteFiles();
+    }
+}
+
+
+
 void DrawApp() {
     BeginDrawing();
     ClearBackground(RAYWHITE);
@@ -209,25 +241,7 @@ void DrawApp() {
     //DrawRectangle(screenWidth / 2 - 50, 450, 160, 40, GREEN);
     DrawTextBoxes();
 
-    if (loginPressed) {
-        if ((textSize1 == 0) || (textSize2 == 0)) {
-            cout << "Invalid credentials: Empty fields" << endl;
-        }
-        else {
-            if (CheckCredentials()) {
-                cout << "Login successful! Welcome, " << USINGuser << ". Your balance: " << USINGbalance << endl;
-                home();
-            }
-            else {
-                cout << "Invalid credentials: Username or password incorrect" << endl;
-            }
-        }
-        loginPressed = false;
-    }
-    if (registerPressed) {
-        WriteFiles();
-    }
-
+    loginAndregisterProcess();
 
     EndDrawing();
 }
@@ -239,7 +253,5 @@ int main() {
         isRecPressed(Register, registerPressed);
         DrawApp();
     }
-
-    CloseWindow();
     return 0;
 }
