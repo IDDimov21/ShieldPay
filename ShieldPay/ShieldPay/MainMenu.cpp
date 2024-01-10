@@ -213,6 +213,7 @@ void loginAndregisterProcess() {
             if (CheckCredentials()) {
                 cout << "Login successful! Welcome, " << USINGuser << ". Your balance: " << USINGbalance << endl;
                 UnloadTexts();
+                EndDrawing();
                 home();
             }
             else {
@@ -242,8 +243,8 @@ void DrawApp() {
     DrawTextBoxes();
 
     loginAndregisterProcess();
-
-    EndDrawing();
+    if(!loginPressed)
+        EndDrawing();
 }
 
 int main() {

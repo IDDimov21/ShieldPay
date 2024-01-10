@@ -8,7 +8,7 @@ int home() {
     Texture2D backg = LoadTexture("Images/background.png");
 
     while (!WindowShouldClose()) {
-        BeginDrawing();
+
         ClearBackground(RAYWHITE);
 
         DrawTexture(nav, -10, 0, RAYWHITE);
