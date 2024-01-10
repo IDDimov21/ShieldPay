@@ -13,7 +13,7 @@ bool cursorVisible = true;
 bool loginPressed = false, registerPressed = false, flag = false;
 string username, password, usernameFromFile, passwordFromFile, USINGuser, USINGpass;
 fstream Usernames, Passwords, Balances;
-string dataFolderPath = "F:/ShieldPay/ShieldPay/ShieldPay/Data";
+string dataFolderPath = "D:/ShieldPay/ShieldPay/ShieldPay/Data";
 
 void isRecPressed(Rectangle rec, bool& check) {
     if (CheckCollisionPointRec(GetMousePosition(), rec)) {
