@@ -85,19 +85,23 @@ void ReadFiles() {
         cerr << "Error opening one or more files." << endl;
     }
 }
-
 bool CheckCredentials() {
-    ReadFiles();
-
-    // Declare balanceFromFile here to fix the compilation error
     string balanceFromFile;
+    // Open files for reading
+    Usernames.open(dataFolderPath + "/usernames.txt", ios::in);
+    Passwords.open(dataFolderPath + "/passwords.txt", ios::in);
+    Balances.open(dataFolderPath + "/balances.txt", ios::in);
 
-    // Read usernames and passwords and compare with entered credentials
-    while (getline(Usernames, usernameFromFile) && getline(Passwords, passwordFromFile) && getline(Balances, balanceFromFile)) {
-        cout << "Entered Username: " << username << endl;
-        cout << "Entered Password: " << password << endl;
+    if (!Usernames.is_open() || !Passwords.is_open() || !Balances.is_open()) {
+        cerr << "Error opening one or more files." << endl;
+        return false;
+    }
 
+    // Read usernames, passwords, and balances and compare with entered credentials
+    while (Usernames >> usernameFromFile && Passwords >> passwordFromFile && Balances >> balanceFromFile) {
         if (usernameFromFile == username && passwordFromFile == password) {
+            cout << "Entered Username: " << username << endl;
+            cout << "Entered Password: " << password << endl;
             USINGuser = username;
             USINGpass = password;
             USINGbalance = stod(balanceFromFile); // Convert balance to double
@@ -114,6 +118,7 @@ bool CheckCredentials() {
 
     return false; // Credentials do not match
 }
+
 
 void WriteFiles() {
     // Open files in append mode to keep existing data
