@@ -10,11 +10,12 @@ char text2[25] = { 0 }; // Text for the second text box
 int textSize1 = 0, textSize2 = 0;
 bool isTextBox1Focused = false, isTextBox2Focused = false;
 int framesCounter = 0;
+double USINGbalance;
 bool cursorVisible = true;
 bool loginPressed = false, registerPressed = false;
 string username, password, usernameFromFile, passwordFromFile, USINGuser, USINGpass;
-fstream Usernames, Passwords;
-string dataFolderPath = "D:/ShieldPay/ShieldPay/ShieldPay/Data";
+fstream Usernames, Passwords, Balances;
+string dataFolderPath = "F:/ShieldPay/ShieldPay/ShieldPay/Data";
 
 void isRecPressed(Rectangle rec, bool& check) {
     if (CheckCollisionPointRec(GetMousePosition(), rec)) {
@@ -73,36 +74,43 @@ void HandleTextInput() {
     }
 }
 
+
 void ReadFiles() {
     // Open files for reading
     Usernames.open(dataFolderPath + "/usernames.txt", ios::in);
     Passwords.open(dataFolderPath + "/passwords.txt", ios::in);
+    Balances.open(dataFolderPath + "/balances.txt", ios::in);
 
-    if (!Usernames.is_open() || !Passwords.is_open()) {
-        cerr << "Error opening username or password file." << endl;
+    if (!Usernames.is_open() || !Passwords.is_open() || !Balances.is_open()) {
+        cerr << "Error opening one or more files." << endl;
     }
 }
-
 
 bool CheckCredentials() {
     ReadFiles();
 
+    // Declare balanceFromFile here to fix the compilation error
+    string balanceFromFile;
+
     // Read usernames and passwords and compare with entered credentials
-    while (getline(Usernames, usernameFromFile) && getline(Passwords, passwordFromFile)) {
+    while (getline(Usernames, usernameFromFile) && getline(Passwords, passwordFromFile) && getline(Balances, balanceFromFile)) {
         cout << "Entered Username: " << username << endl;
         cout << "Entered Password: " << password << endl;
 
         if (usernameFromFile == username && passwordFromFile == password) {
             USINGuser = username;
             USINGpass = password;
+            USINGbalance = stod(balanceFromFile); // Convert balance to double
             Usernames.close();
             Passwords.close();
+            Balances.close();
             return true; // Credentials match
         }
     }
 
     Usernames.close();
     Passwords.close();
+    Balances.close();
 
     return false; // Credentials do not match
 }
@@ -111,13 +119,16 @@ void WriteFiles() {
     // Open files in append mode to keep existing data
     Usernames.open(dataFolderPath + "/usernames.txt", ios::app);
     Passwords.open(dataFolderPath + "/passwords.txt", ios::app);
+    Balances.open(dataFolderPath + "/balances.txt", ios::app);
 
-    if (Usernames.is_open() && Passwords.is_open() && registerPressed) {
+    if (Usernames.is_open() && Passwords.is_open() && Balances.is_open() && registerPressed) {
         Usernames << username << endl;
         Passwords << password << endl;
-        cout << "Your account has been registered sucessfully!!" << endl;
+        Balances << "0.0" << endl; // Assuming initial balance is 0.0
+        cout << "Your account has been registered successfully!!" << endl;
         Usernames.close();  // Close immediately after writing
         Passwords.close();  // Close immediately after writing
+        Balances.close();  // Close immediately after writing
         registerPressed = false;
     }
 }
@@ -199,7 +210,7 @@ void DrawApp() {
         }
         else {
             if (CheckCredentials()) {
-                cout << "Login successful!" << endl;
+                cout << "Login successful! Welcome, " << USINGuser << ". Your balance: " << USINGbalance << endl;
                 home();
             }
             else {
