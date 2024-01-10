@@ -1,8 +1,6 @@
 #include "mainMenu.hpp"
 using namespace std;
 
-const int screenWidth = 1100;
-const int screenHeight = 700;
 Rectangle Login = { screenWidth / 2 - 80, 400, 170, 45 }, Register = { screenWidth / 2 - 50, 450, 160, 40 };
 Texture2D NavBar, background, blockBG, login, regis;
 char text1[25] = { 0 }; // Text for the first text box
@@ -15,7 +13,7 @@ bool cursorVisible = true;
 bool loginPressed = false, registerPressed = false, flag = false;
 string username, password, usernameFromFile, passwordFromFile, USINGuser, USINGpass;
 fstream Usernames, Passwords, Balances;
-string dataFolderPath = "D:/ShieldPay/ShieldPay/ShieldPay/Data";
+string dataFolderPath = "F:/ShieldPay/ShieldPay/ShieldPay/Data";
 
 void isRecPressed(Rectangle rec, bool& check) {
     if (CheckCollisionPointRec(GetMousePosition(), rec)) {
@@ -213,8 +211,7 @@ void loginAndregisterProcess() {
             if (CheckCredentials()) {
                 cout << "Login successful! Welcome, " << USINGuser << ". Your balance: " << USINGbalance << endl;
                 UnloadTexts();
-                EndDrawing();
-                home();
+                home(USINGuser);
             }
             else {
                 cout << "Invalid credentials: Username or password incorrect" << endl;
