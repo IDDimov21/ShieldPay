@@ -1,6 +1,6 @@
 #include "home.hpp"
 
-int home(const string& username) {
+int home(const std::string& username, double balance) {
     SetTargetFPS(60);
 
     Texture2D nav = LoadTexture("Images/Bar.png");
@@ -17,6 +17,7 @@ int home(const string& username) {
 
         DrawText(("Welcome, " + username).c_str(), 30, 10, 30, WHITE);
         DrawText("Balance", 350, 10, 28, WHITE);
+        DrawText(TextFormat("%.2lf", balance), 200, 200, 50, WHITE);
         DrawText("Transactions", 550, 10, 28, WHITE);
         DrawText("Wills", 815, 10, 28, WHITE);
         EndDrawing();

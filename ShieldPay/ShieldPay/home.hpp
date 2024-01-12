@@ -2,4 +2,6 @@
 #include <string>
 #include "mainMenu.hpp"
 
-int home(const std::string& username);
+using namespace std;
+
+int home(const string& username, double balance);

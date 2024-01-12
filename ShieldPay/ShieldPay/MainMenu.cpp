@@ -13,7 +13,7 @@ bool cursorVisible = true;
 bool loginPressed = false, registerPressed = false, flag = false;
 string username, password, usernameFromFile, passwordFromFile, USINGuser, USINGpass;
 fstream Usernames, Passwords, Balances;
-string dataFolderPath = "D:/ShieldPay/ShieldPay/ShieldPay/Data";
+string dataFolderPath = "F:/ShieldPay/ShieldPay/ShieldPay/Data";
 
 void isRecPressed(Rectangle rec, bool& check) {
     if (CheckCollisionPointRec(GetMousePosition(), rec)) {
@@ -211,7 +211,7 @@ void loginAndregisterProcess() {
             if (CheckCredentials()) {
                 cout << "Login successful! Welcome, " << USINGuser << ". Your balance: " << USINGbalance << endl;
                 UnloadTexts();
-                home(USINGuser);
+                home(USINGuser, USINGbalance); // Pass the balance to the home function
             }
             else {
                 cout << "Invalid credentials: Username or password incorrect" << endl;
@@ -223,8 +223,6 @@ void loginAndregisterProcess() {
         WriteFiles();
     }
 }
-
-
 
 void DrawApp() {
     BeginDrawing();
