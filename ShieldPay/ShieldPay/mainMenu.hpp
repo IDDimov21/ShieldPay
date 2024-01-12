@@ -15,7 +15,7 @@ const int screenHeight = 700;
 int main();
 void InitApp();
 void DrawApp();
-void DrawTextBoxes();
+void DrawLoginBoxes();
 void HandleTextInput();
 void isRecPressed(Rectangle rec, bool& check);
 void ReadFiles();

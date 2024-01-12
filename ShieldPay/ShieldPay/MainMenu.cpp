@@ -131,7 +131,7 @@ void WriteFiles() {
     }
 }
 
-void DrawTextBoxes() {
+void DrawLoginBoxes() {
     // Define the first text box
     Rectangle textBox1 = { screenWidth / 2 - 120, screenHeight / 2 - 95, 240, 40 };
     DrawRectangleRec(textBox1, isTextBox1Focused ? GRAY : LIGHTGRAY);
@@ -206,7 +206,7 @@ void loginAndregisterProcess() {
             if (CheckCredentials()) {
                 cout << "Login successful! Welcome, " << USINGuser << ". Your balance: " << USINGbalance << endl;
                 UnloadTexts();
-                home(USINGuser, USINGbalance); // Pass the balance to the home function
+                home(USINGuser, USINGpass, USINGbalance); // Pass the balance to the home function
             }
             else {
                 cout << "Invalid credentials: Username or password incorrect" << endl;
@@ -228,7 +228,7 @@ void DrawApp() {
     DrawTexture(blockBG, screenWidth / 2 - blockBG.width / 2, screenHeight / 2 - blockBG.height / 2, RAYWHITE);
     DrawTexture(login, screenWidth / 2 - 80, 400, RAYWHITE);
     DrawTexture(regis, screenWidth / 2 - 50, 450, RAYWHITE);
-    DrawTextBoxes();
+    DrawLoginBoxes();
 
     loginAndregisterProcess();
     if(!loginPressed)
