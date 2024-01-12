@@ -18,8 +18,6 @@ int home(const string& username, double& balance) {
         DrawTexture(backg, 0, 50, RAYWHITE);
         DrawText(("User: " + username).c_str(), 50, 10, 30, WHITE);
         
-
-
         if (Bal) {
             isRecPressed(Transac, Trans);
             isRecPressed(Will, Wil);
@@ -38,6 +36,9 @@ int home(const string& username, double& balance) {
             if (Bal or Wil)
                 Trans = false;
             DrawText("Transactions", 520, 10, 28, GRAY);
+            DrawText("Transmit money", 180, 220, 40, BLACK);
+            DrawText("Username: ", 100, 320, 30, BLACK);
+            DrawText("Confirm Password: ", 65, 390, 29, BLACK);
         }
         else
             DrawText("Transactions", 520, 10, 28, WHITE);
