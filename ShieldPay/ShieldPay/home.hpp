@@ -4,4 +4,4 @@
 
 using namespace std;
 
-int home(const string& username, double balance);
+int home(const std::string& username, double& balance);
