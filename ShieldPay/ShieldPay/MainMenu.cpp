@@ -11,9 +11,9 @@ int framesCounter = 0;
 double USINGbalance;
 bool cursorVisible = true;
 bool loginPressed = false, registerPressed = false, flag = false;
-string username, password, usernameFromFile, passwordFromFile, USINGuser, USINGpass;
+string username, password, usernameFromFile, passwordFromFile, balanceFromFile, USINGuser, USINGpass;
 fstream Usernames, Passwords, Balances;
-string dataFolderPath = "F:/ShieldPay/ShieldPay/ShieldPay/Data";
+string dataFolderPath = "D:/ShieldPay/ShieldPay/ShieldPay/Data";
 
 void isRecPressed(Rectangle rec, bool& check) {
     if (CheckCollisionPointRec(GetMousePosition(), rec)) {
@@ -84,19 +84,14 @@ void ReadFiles() {
     }
 }
 bool CheckCredentials() {
-    string balanceFromFile;
     // Open files for reading
     Usernames.open(dataFolderPath + "/usernames.txt", ios::in);
     Passwords.open(dataFolderPath + "/passwords.txt", ios::in);
     Balances.open(dataFolderPath + "/balances.txt", ios::in);
 
-    if (!Usernames.is_open() || !Passwords.is_open() || !Balances.is_open()) {
-        cerr << "Error opening one or more files." << endl;
-        return false;
-    }
-
     // Read usernames, passwords, and balances and compare with entered credentials
-    while (Usernames >> usernameFromFile && Passwords >> passwordFromFile && Balances >> balanceFromFile) {
+    while (getline(Usernames, usernameFromFile) && getline(Passwords, passwordFromFile) && getline(Balances, balanceFromFile))
+    {
         if (usernameFromFile == username && passwordFromFile == password) {
             cout << "Entered Username: " << username << endl;
             cout << "Entered Password: " << password << endl;
@@ -127,11 +122,11 @@ void WriteFiles() {
     if (Usernames.is_open() && Passwords.is_open() && Balances.is_open() && registerPressed) {
         Usernames << username << endl;
         Passwords << password << endl;
-        Balances << "0.0" << endl; // Assuming initial balance is 0.0
+        Balances << "100.0" << endl; //Starting balance = 100
         cout << "Your account has been registered successfully!!" << endl;
         Usernames.close();  // Close immediately after writing
-        Passwords.close();  // Close immediately after writing
-        Balances.close();  // Close immediately after writing
+        Passwords.close();  
+        Balances.close();  
         registerPressed = false;
     }
 }
@@ -233,8 +228,6 @@ void DrawApp() {
     DrawTexture(blockBG, screenWidth / 2 - blockBG.width / 2, screenHeight / 2 - blockBG.height / 2, RAYWHITE);
     DrawTexture(login, screenWidth / 2 - 80, 400, RAYWHITE);
     DrawTexture(regis, screenWidth / 2 - 50, 450, RAYWHITE);
-    //DrawRectangle(screenWidth / 2 - 80, 400, 170, 45, RED);
-    //DrawRectangle(screenWidth / 2 - 50, 450, 160, 40, GREEN);
     DrawTextBoxes();
 
     loginAndregisterProcess();
