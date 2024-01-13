@@ -1,9 +1,2 @@
-﻿  mainMenu.cpp
-F:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(142,30): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-F:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(142,25): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-F:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(143,29): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-F:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(143,22): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-F:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(146,21): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-F:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(147,45): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-F:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(147,29): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+﻿  home.cpp
   ShieldPay.vcxproj -> F:\ShieldPay\ShieldPay\x64\Debug\ShieldPay.exe

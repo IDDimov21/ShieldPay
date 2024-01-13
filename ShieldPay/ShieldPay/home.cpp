@@ -1,33 +1,56 @@
 #include "home.hpp"
 
-//char text1[25] = { 0 }; // Text for the first text box
-//char text2[25] = { 0 }; // Text for the second text box
-//int textSize1 = 0, textSize2 = 0;
-//bool isTextBox1Focused = false, isTextBox2Focused = false, cursorVisible = true;
-//string username;
+Rectangle textBox3 = { 100, 300, 240, 40 };
+Rectangle textBox4 = { 100, 380, 240, 40 };
+Rectangle textBox5 = { 100, 450, 240, 40 };
+char text3[25] = { 0 }; // Text for the third text box
+char text4[25] = { 0 }; // Text for the fourth text box
+char text5[25] = { 0 }; // Text for the fifth text box
+int textSize3 = 0, textSize4 = 0, textSize5 = 0;
+bool isTextBox3Focused = false, isTextBox4Focused = false, isTextBox5Focused = false;
+int framesCounterHome = 0;
+bool cursorVisibleHome = true;
 
-//void DrawCredentialBoxes() {
-//    Rectangle textBox1 = { screenWidth / 2 - 120, screenHeight / 2 - 95, 240, 40 };
-//    DrawRectangleRec(textBox1, isTextBox1Focused ? GRAY : LIGHTGRAY);
-//    DrawRectangleLinesEx(textBox1, 2.5, isTextBox1Focused ? DARKGRAY : DARKGRAY);
-//    DrawText(text1, screenWidth / 2 - 113, screenHeight / 2 - 85, 20, BLACK);
-//
-//    if (isTextBox1Focused && cursorVisible) {
-//        int cursorX = screenWidth / 2 - 120 + MeasureText(text1, 20) + 20;
-//        DrawLine(cursorX - 10, screenHeight / 2 - 85, cursorX - 10, screenHeight / 2 - 65, WHITE);
-//    }
-//
-//    if (CheckCollisionPointRec(GetMousePosition(), textBox1)) {
-//        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-//            isTextBox1Focused = !isTextBox1Focused;
-//            string username(begin(text1), end(text1));
-//        }
-//    }
-//    else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-//        isTextBox1Focused = false;
-//        string username(begin(text1), end(text1));
-//    }
-//}
+void drawTextBoxes() {
+    DrawTextBox(textBox3.x, textBox3.y, isTextBox3Focused, "Username:", text3);
+    DrawTextBox(textBox4.x, textBox4.y, isTextBox4Focused, "Confirm Password:", text4);
+    DrawTextBox(textBox5.x, textBox5.y, isTextBox5Focused, "Sum:", text5);
+
+    if (isTextBox3Focused) {
+        handleTextBoxInput(text3, textSize3);
+    }
+    else if (isTextBox4Focused) {
+        handleTextBoxInput(text4, textSize4);
+    }
+    else if (isTextBox5Focused) {
+        handleTextBoxInput(text5, textSize5);
+    }
+}
+
+void handleTextBoxInput(char* text, int& textSize) {
+    // Handle text input for the focused textbox
+    framesCounterHome++;
+    if (framesCounterHome >= 30) {
+        framesCounterHome = 0;
+        cursorVisibleHome = !cursorVisibleHome;
+    }
+
+    int key = GetKeyPressed();
+    if (key != 0) {
+        // Handle key presses for the focused textbox
+        if ((key >= 32) && (key < 127) && (textSize < 19)) {
+            // Convert the key to lowercase
+            key = tolower(key);
+
+            text[textSize] = (char)key;
+            textSize++;
+        }
+        else if (key == KEY_BACKSPACE && textSize > 0) {
+            textSize--;
+            text[textSize] = '\0';
+        }
+    }
+}
 
 int home(const string& username, const string& password, double& balance) {
     SetTargetFPS(60);
@@ -46,7 +69,11 @@ int home(const string& username, const string& password, double& balance) {
         DrawTexture(nav, -10, 0, RAYWHITE);
         DrawTexture(backg, 0, 50, RAYWHITE);
         DrawText(("User: " + username).c_str(), 50, 10, 30, WHITE);
-        
+
+        isRecPressed(Balance, Bal);
+        isRecPressed(Transac, Trans);
+        isRecPressed(Will, Wil);
+
         if (Bal) {
             isRecPressed(Transac, Trans);
             isRecPressed(Will, Wil);
@@ -66,9 +93,7 @@ int home(const string& username, const string& password, double& balance) {
                 Trans = false;
             DrawText("Transactions", 520, 10, 28, GRAY);
             DrawText("Transmit money", 180, 220, 40, BLACK);
-            DrawText("Username: ", 100, 320, 30, BLACK);
-            DrawText("Confirm Password: ", 65, 390, 29, BLACK);
-            DrawText("Sum: ", 135, 450, 30, BLACK);
+            drawTextBoxes();
         }
         else
             DrawText("Transactions", 520, 10, 28, WHITE);
