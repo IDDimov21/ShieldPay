@@ -13,7 +13,9 @@ bool cursorVisible = true;
 bool loginPressed = false, registerPressed = false, flag = false;
 string username, password, usernameFromFile, passwordFromFile, balanceFromFile, USINGuser, USINGpass;
 fstream Usernames, Passwords, Balances;
-string dataFolderPath = "D:/ShieldPay/ShieldPay/ShieldPay/Data";
+Rectangle textBox1 = { screenWidth / 2 - 120, screenHeight / 2 - 95, 240, 40 };
+Rectangle textBox2 = { screenWidth / 2 - 120, screenHeight / 2 - 15, 240, 40 };
+string dataFolderPath = "F:/ShieldPay/ShieldPay/ShieldPay/Data";
 
 void isRecPressed(Rectangle rec, bool& check) {
     if (CheckCollisionPointRec(GetMousePosition(), rec)) {
@@ -49,25 +51,25 @@ void HandleTextInput() {
             text1[textSize1] = (char)key;
             textSize1++;
             text1[textSize1 - 1] = tolower(text1[textSize1 - 1]);
-            username = std::string(text1);
+            username = string(text1);
         }
         else if (isTextBox1Focused && key == KEY_BACKSPACE && textSize1 > 0) {
             textSize1--;
             text1[textSize1] = '\0';
             text1[textSize1 - 1] = tolower(text1[textSize1 - 1]);
-            username = std::string(text1);
+            username = string(text1);
         }
         else if (isTextBox2Focused && (key >= 32) && (key < 127) && (textSize2 < 19)) {
             text2[textSize2] = (char)key;
             textSize2++;
             text2[textSize2 - 1] = tolower(text2[textSize2 - 1]);
-            password = std::string(text2);
+            password = string(text2);
         }
         else if (isTextBox2Focused && key == KEY_BACKSPACE && textSize2 > 0) {
             textSize2--;
             text2[textSize2] = '\0';
             text2[textSize2 - 1] = tolower(text2[textSize2 - 1]);
-            password = std::string(text2);
+            password = string(text2);
         }
     }
 }
@@ -131,54 +133,33 @@ void WriteFiles() {
     }
 }
 
+void DrawTextBox(float x, float y, bool& isFocused, const char* labelText, char* text) {
+    Rectangle rect = { x, y, 240, 40 };
+
+    DrawRectangleRec(rect, isFocused ? GRAY : LIGHTGRAY);
+    DrawRectangleLinesEx(rect, 2.5, isFocused ? DARKGRAY : DARKGRAY);
+
+    DrawText(labelText, x, y - 30, 20, WHITE);
+    DrawText(text, x + 7, y + 9, 20, BLACK);
+
+    if (isFocused && cursorVisible) {
+        int cursorX = x + 7 + MeasureText(text, 20) + 5;
+        DrawLine(cursorX, y + 7, cursorX, y + 27, WHITE);
+    }
+
+    if (CheckCollisionPointRec(GetMousePosition(), rect)) {
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            isFocused = !isFocused;
+        }
+    }
+    else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        isFocused = false;
+    }
+}
+
 void DrawLoginBoxes() {
-    // Define the first text box
-    Rectangle textBox1 = { screenWidth / 2 - 120, screenHeight / 2 - 95, 240, 40 };
-    DrawRectangleRec(textBox1, isTextBox1Focused ? GRAY : LIGHTGRAY);
-    DrawRectangleLinesEx(textBox1, 2.5, isTextBox1Focused ? DARKGRAY : DARKGRAY);
-
-    DrawText("Username: ", screenWidth / 2 + -120, screenHeight / 2 - 125, 20, WHITE);
-    DrawText(text1, screenWidth / 2 - 113, screenHeight / 2 - 85, 20, BLACK);
-    if (isTextBox1Focused && cursorVisible) {
-        int cursorX = screenWidth / 2 - 120 + MeasureText(text1, 20) + 20;
-        DrawLine(cursorX - 10, screenHeight / 2 - 85, cursorX - 10, screenHeight / 2 - 65, WHITE);
-    }
-
-    if (CheckCollisionPointRec(GetMousePosition(), textBox1)) {
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            isTextBox1Focused = !isTextBox1Focused;
-            string username(begin(text1), end(text1));
-        }
-    }
-    else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        isTextBox1Focused = false;
-        string username(begin(text1), end(text1));
-    }
-
-    // Define the second text box below the first one
-    Rectangle textBox2 = { screenWidth / 2 - 120, screenHeight / 2 - 15, 240, 40 };
-    DrawRectangleRec(textBox2, isTextBox2Focused ? GRAY : LIGHTGRAY);
-    DrawRectangleLinesEx(textBox2, 2.5, isTextBox2Focused ? DARKGRAY : DARKGRAY);
-
-    DrawText("Password: ", screenWidth / 2 - 120, screenHeight / 2 - 35, 20, WHITE);
-    DrawText(text2, screenWidth / 2 - 113, screenHeight / 2 - 4, 20, BLACK);
-    if (isTextBox2Focused && cursorVisible) {
-        int cursorX = screenWidth / 2 - 120 + MeasureText(text2, 20) + 20;
-
-        DrawLine(cursorX - 10, screenHeight / 2 - 5, cursorX - 10, screenHeight / 2 + 15, WHITE);
-
-    }
-
-    if (CheckCollisionPointRec(GetMousePosition(), textBox2)) {
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            isTextBox2Focused = !isTextBox2Focused;
-            string password(begin(text2), end(text2));
-        }
-    }
-    else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        isTextBox2Focused = false;
-        string password(begin(text2), end(text2));
-    }
+    DrawTextBox(screenWidth / 2 - 120, screenHeight / 2 - 95, isTextBox1Focused, "Username:", text1);
+    DrawTextBox(screenWidth / 2 - 120, screenHeight / 2 - 15, isTextBox2Focused, "Password:", text2);
 
     if (isTextBox1Focused || isTextBox2Focused) {
         HandleTextInput();

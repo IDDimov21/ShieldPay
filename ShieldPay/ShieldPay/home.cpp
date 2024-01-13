@@ -1,33 +1,33 @@
 #include "home.hpp"
 
-char text1[25] = { 0 }; // Text for the first text box
-char text2[25] = { 0 }; // Text for the second text box
-int textSize1 = 0, textSize2 = 0;
-bool isTextBox1Focused = false, isTextBox2Focused = false, cursorVisible = true;
-string username;
+//char text1[25] = { 0 }; // Text for the first text box
+//char text2[25] = { 0 }; // Text for the second text box
+//int textSize1 = 0, textSize2 = 0;
+//bool isTextBox1Focused = false, isTextBox2Focused = false, cursorVisible = true;
+//string username;
 
-void DrawCredentialBoxes() {
-    Rectangle textBox1 = { screenWidth / 2 - 120, screenHeight / 2 - 95, 240, 40 };
-    DrawRectangleRec(textBox1, isTextBox1Focused ? GRAY : LIGHTGRAY);
-    DrawRectangleLinesEx(textBox1, 2.5, isTextBox1Focused ? DARKGRAY : DARKGRAY);
-    DrawText(text1, screenWidth / 2 - 113, screenHeight / 2 - 85, 20, BLACK);
-
-    if (isTextBox1Focused && cursorVisible) {
-        int cursorX = screenWidth / 2 - 120 + MeasureText(text1, 20) + 20;
-        DrawLine(cursorX - 10, screenHeight / 2 - 85, cursorX - 10, screenHeight / 2 - 65, WHITE);
-    }
-
-    if (CheckCollisionPointRec(GetMousePosition(), textBox1)) {
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            isTextBox1Focused = !isTextBox1Focused;
-            string username(begin(text1), end(text1));
-        }
-    }
-    else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        isTextBox1Focused = false;
-        string username(begin(text1), end(text1));
-    }
-}
+//void DrawCredentialBoxes() {
+//    Rectangle textBox1 = { screenWidth / 2 - 120, screenHeight / 2 - 95, 240, 40 };
+//    DrawRectangleRec(textBox1, isTextBox1Focused ? GRAY : LIGHTGRAY);
+//    DrawRectangleLinesEx(textBox1, 2.5, isTextBox1Focused ? DARKGRAY : DARKGRAY);
+//    DrawText(text1, screenWidth / 2 - 113, screenHeight / 2 - 85, 20, BLACK);
+//
+//    if (isTextBox1Focused && cursorVisible) {
+//        int cursorX = screenWidth / 2 - 120 + MeasureText(text1, 20) + 20;
+//        DrawLine(cursorX - 10, screenHeight / 2 - 85, cursorX - 10, screenHeight / 2 - 65, WHITE);
+//    }
+//
+//    if (CheckCollisionPointRec(GetMousePosition(), textBox1)) {
+//        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+//            isTextBox1Focused = !isTextBox1Focused;
+//            string username(begin(text1), end(text1));
+//        }
+//    }
+//    else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+//        isTextBox1Focused = false;
+//        string username(begin(text1), end(text1));
+//    }
+//}
 
 int home(const string& username, const string& password, double& balance) {
     SetTargetFPS(60);
