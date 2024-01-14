@@ -133,7 +133,7 @@ void WriteFiles() {
     }
 }
 
-void DrawTextBox(float x, float y, bool& isFocused, const char* labelText, char* text, bool check) {
+void DrawTextBox(float x, float y, bool& isFocused, const char* labelText, char* text, bool check, bool isInWill) {
     Rectangle rect;
     if (!check) {
         rect = { x, y, 240, 40 };
@@ -146,7 +146,12 @@ void DrawTextBox(float x, float y, bool& isFocused, const char* labelText, char*
     DrawRectangleLinesEx(rect, 2.5, isFocused ? DARKGRAY : DARKGRAY);
 
     DrawText(labelText, x, y - 30, 20, WHITE);
-    DrawText(text, x + 7, y + 9, 20, BLACK);
+    if (isInWill) {
+        DrawText(willText, x + 10, y + 10, 20, BLACK);
+    }
+    else {
+        DrawText(text, x + 7, y + 9, 20, BLACK);
+    }
 
     if (isFocused && cursorVisible) {
         int cursorX = x + 7 + MeasureText(text, 20) + 5;

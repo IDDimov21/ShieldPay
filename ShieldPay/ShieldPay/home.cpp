@@ -13,8 +13,9 @@ string dataFolder = "/Data";
 string user, sum, pass;
 Rectangle SaveButton = { 165, 580, 100, 40 };
 Rectangle willTextBox = { 100, 300, 400, 200 };
-char willText[500] = { 0 };  // Adjust the size as needed
 int willTextSize = 0;
+bool willText = false;
+bool willText1 = false;
 bool isWillTextBoxFocused = false;
 string willTextString;
 string USINGuser;
@@ -77,12 +78,12 @@ void handleTextBoxInput(char* text, int& textSize, string& str, bool flag) {
 
 void drawTextBoxes() {
     if (!willCheck) {
-        DrawTextBox(textBox3.x, textBox3.y, isTextBox3Focused, "Username:", text3, willCheck);
-        DrawTextBox(textBox4.x, textBox4.y, isTextBox4Focused, "Confirm Password:", text4, willCheck);
-        DrawTextBox(textBox5.x, textBox5.y, isTextBox5Focused, "Sum:", text5, willCheck);
+        DrawTextBox(textBox3.x, textBox3.y, isTextBox3Focused, "Username:", text3, willCheck, willText1);
+        DrawTextBox(textBox4.x, textBox4.y, isTextBox4Focused, "Confirm Password:", text4, willCheck, willText1);
+        DrawTextBox(textBox5.x, textBox5.y, isTextBox5Focused, "Sum:", text5, willCheck, willText);
     }
     else {
-        DrawTextBox(willTextBox.x, willTextBox.y, isWillTextBoxFocused, "Your Will:", willText, willCheck);
+        DrawTextBox(willTextBox.x, willTextBox.y, isWillTextBoxFocused, "Your Will:", willText, willCheck, willText1);
         DrawRectangleRec(SaveButton, isSendPressed ? RED : MAROON);
         DrawText("SAVE", SaveButton.x + 20, SaveButton.y + 10, 20, WHITE);
     }
@@ -172,9 +173,7 @@ int home(const string& username, const string& password, double& balance) {
             else {
                 DrawText("Wills", 750, 10, 28, GRAY);
                 willCheck = true;
-                DrawText("Your Will:", 100, 270, 28, BLACK);
-                DrawText(willTextString.c_str(), willTextBox.x + 100, willTextBox.y + 10, 20, BLACK);
-
+                willText = true;
                 drawTextBoxes();
                 isRecPressed(SaveButton, isSendPressed);
 
