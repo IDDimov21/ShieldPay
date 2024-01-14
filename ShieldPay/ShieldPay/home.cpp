@@ -1,5 +1,5 @@
 #include "home.hpp"
-
+#include <sstream>
 Rectangle textBox3 = { 100, 300, 240, 40 }, textBox4 = { 100, 380, 240, 40 }, textBox5 = { 100, 450, 240, 40 };
 Rectangle Send = { 165, 520, 100, 40 };
 char text3[25] = { 0 }; // Text for the third text box
@@ -9,12 +9,29 @@ int textSize3 = 0, textSize4 = 0, textSize5 = 0;
 bool isTextBox3Focused = false, isTextBox4Focused = false, isTextBox5Focused = false, NumCheck = true;
 bool cursorVisibleHome = true, isSendPressed = false;
 int framesCounterHome = 0;
-string dataFolder = "D:/ShieldPay/ShieldPay/ShieldPay/Data";
+string dataFolder = "/Data";
 string user, sum, pass;
+Rectangle SaveButton = { 165, 580, 100, 40 };
+Rectangle willTextBox = { 100, 300, 400, 200 };
+char willText[500] = { 0 };  // Adjust the size as needed
+int willTextSize = 0;
+bool isWillTextBoxFocused = false;
+string willTextString;
+string USINGuser;
 
+
+void LoadWillFromFile() {
+    ifstream file("Data/wills.txt");
+    if (file.is_open()) {
+        // Read the entire contents of the file into willTextString
+        stringstream buffer;
+        buffer << file.rdbuf();
+        willTextString = buffer.str();
+        file.close();
+    }
+}
 
 void handleTextBoxInput(char* text, int& textSize, string& str, bool flag) {
-    // Handle text input for the focused textbox
     framesCounterHome++;
     if (framesCounterHome >= 30) {
         framesCounterHome = 0;
@@ -40,7 +57,7 @@ void handleTextBoxInput(char* text, int& textSize, string& str, bool flag) {
             }
         }
         else {
-            if ((key >= 48) && (key < 58) && (textSize < 19)) {
+            if ((key >= 32) && (key < 127) && (textSize < 499)) {
                 // Convert the key to lowercase
                 key = tolower(key);
 
@@ -53,17 +70,29 @@ void handleTextBoxInput(char* text, int& textSize, string& str, bool flag) {
                 text[textSize] = '\0';
                 str = string(text);
             }
+            // Additional logic for the wills tab
+            else if (!flag && key == KEY_ENTER) {
+                // Update willTextString with the new will text
+                willTextString = string(text);
+                // Redraw the will text on the screen
+                DrawText(willTextString.c_str(), willTextBox.x + 10, willTextBox.y + 10, 20, BLACK);
+            }
         }
-
     }
 }
+
 
 void drawTextBoxes() {
     DrawTextBox(textBox3.x, textBox3.y, isTextBox3Focused, "Username:", text3);
     DrawTextBox(textBox4.x, textBox4.y, isTextBox4Focused, "Confirm Password:", text4);
     DrawTextBox(textBox5.x, textBox5.y, isTextBox5Focused, "Sum:", text5);
-
-    if (isTextBox3Focused) {
+    DrawTextBox(willTextBox.x, willTextBox.y, isWillTextBoxFocused, "Your Will:", willText);
+    DrawRectangleRec(SaveButton, isSendPressed ? RED : MAROON);
+    DrawText("SAVE", SaveButton.x + 20, SaveButton.y + 10, 20, WHITE);
+    if (isWillTextBoxFocused) {
+        handleTextBoxInput(willText, willTextSize, willTextString, true);
+    }
+    else if (isTextBox3Focused) {
         NumCheck = true;
         handleTextBoxInput(text3, textSize3, user, NumCheck);
     }
@@ -78,6 +107,15 @@ void drawTextBoxes() {
 }
 
 
+void SaveToFile(const char* text) {
+    ofstream file("Data/wills.txt");
+    if (file.is_open()) {
+        cout << "Saving to file: " << text << endl;  // Debug output
+        file << text << endl;
+        file.close();
+    }
+}
+
 int home(const string& username, const string& password, double& balance) {
     SetTargetFPS(60);
 
@@ -87,6 +125,8 @@ int home(const string& username, const string& password, double& balance) {
     Rectangle Balance = { 380, 10, 115, 30 }, Transac = { 520, 10, 195, 30 }, Will = { 748, 10, 64, 30 };
 
     bool Bal = true, Trans = false, Wil = false;
+
+    LoadWillFromFile();  // Load existing will text
 
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -129,12 +169,28 @@ int home(const string& username, const string& password, double& balance) {
         if (Wil) {
             isRecPressed(Balance, Bal);
             isRecPressed(Transac, Trans);
-            if (Bal or Trans)
+            if (Bal or Trans) {
                 Wil = false;
-            DrawText("Wills", 750, 10, 28, GRAY);
+            }
+            else {
+                DrawText("Wills", 750, 10, 28, GRAY);
+
+                DrawText("Your Will:", 100, 270, 28, BLACK);
+                DrawText(willTextString.c_str(), willTextBox.x + 10, willTextBox.y + 10, 20, BLACK);
+
+                drawTextBoxes();
+                isRecPressed(SaveButton, isSendPressed);
+
+                // Additional logic for the Save button
+                if (isSendPressed) {
+                    SaveToFile(willText);
+                    isSendPressed = false;
+                }
+            }
         }
-        else
+        else {
             DrawText("Wills", 750, 10, 28, WHITE);
+        }
         EndDrawing();
     }
 

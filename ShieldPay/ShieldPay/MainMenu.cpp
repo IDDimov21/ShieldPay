@@ -11,11 +11,11 @@ int framesCounter = 0;
 double USINGbalance;
 bool cursorVisible = true;
 bool loginPressed = false, registerPressed = false, flag = false;
-string username, password, usernameFromFile, passwordFromFile, balanceFromFile, USINGuser, USINGpass;
+string username, password, usernameFromFile, passwordFromFile, balanceFromFile, USINGpass;
 fstream Usernames, Passwords, Balances;
 Rectangle textBox1 = { screenWidth / 2 - 120, screenHeight / 2 - 95, 240, 40 };
 Rectangle textBox2 = { screenWidth / 2 - 120, screenHeight / 2 - 15, 240, 40 };
-string dataFolderPath = "D:/ShieldPay/ShieldPay/ShieldPay/Data";
+string dataFolderPath = "Data";
 
 void isRecPressed(Rectangle rec, bool& check) {
     if (CheckCollisionPointRec(GetMousePosition(), rec)) {
