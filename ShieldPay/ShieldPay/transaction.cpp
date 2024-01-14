@@ -22,13 +22,15 @@ void transaction(const std::string& username, const std::string& password, doubl
 
                         if (usernameFromFile == username && !check1) {
                             cout << balance;
-                            Balances << balance;
+                            if (Balances.is_open())
+                                Balances << balance;
                         }
                         else if (usernameFromFile == user && !check2) {
                             tempBal += stod(sum);
                             balanceFromFile = to_string(tempBal);
                             cout << balanceFromFile;
-                            Balances << balanceFromFile;
+                            if(Balances.is_open())
+                                Balances << balanceFromFile;
                         }
                         else if (usernameFromFile == "") {
                             cout << "Non existing username" << endl;

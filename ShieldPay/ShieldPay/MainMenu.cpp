@@ -9,7 +9,7 @@ int textSize1 = 0, textSize2 = 0;
 bool isTextBox1Focused = false, isTextBox2Focused = false;
 int framesCounter = 0;
 double USINGbalance;
-bool cursorVisible = true;
+bool cursorVisible = true, check = false;
 bool loginPressed = false, registerPressed = false, flag = false;
 string username, password, usernameFromFile, passwordFromFile, balanceFromFile, USINGpass;
 fstream Usernames, Passwords, Balances;
@@ -133,9 +133,15 @@ void WriteFiles() {
     }
 }
 
-void DrawTextBox(float x, float y, bool& isFocused, const char* labelText, char* text) {
-    Rectangle rect = { x, y, 240, 40 };
-
+void DrawTextBox(float x, float y, bool& isFocused, const char* labelText, char* text, bool check) {
+    Rectangle rect;
+    if (!check) {
+        rect = { x, y, 240, 40 };
+    }
+    else {
+        rect = { x + 120, y, 600,  300 };
+    }
+        
     DrawRectangleRec(rect, isFocused ? GRAY : LIGHTGRAY);
     DrawRectangleLinesEx(rect, 2.5, isFocused ? DARKGRAY : DARKGRAY);
 
@@ -158,8 +164,8 @@ void DrawTextBox(float x, float y, bool& isFocused, const char* labelText, char*
 }
 
 void DrawLoginBoxes() {
-    DrawTextBox(screenWidth / 2 - 120, screenHeight / 2 - 95, isTextBox1Focused, "Username:", text1);
-    DrawTextBox(screenWidth / 2 - 120, screenHeight / 2 - 15, isTextBox2Focused, "Password:", text2);
+    DrawTextBox(screenWidth / 2 - 120, screenHeight / 2 - 95, isTextBox1Focused, "Username:", text1, check);
+    DrawTextBox(screenWidth / 2 - 120, screenHeight / 2 - 15, isTextBox2Focused, "Password:", text2, check);
 
     if (isTextBox1Focused || isTextBox2Focused) {
         HandleTextInput();

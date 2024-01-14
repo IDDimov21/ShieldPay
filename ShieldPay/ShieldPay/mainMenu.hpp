@@ -9,7 +9,7 @@ void InitApp();
 void DrawApp();
 void DrawLoginBoxes();
 void HandleTextInput();
-void DrawTextBox(float x, float y, bool& isFocused, const char* labelText, char* text);
+void DrawTextBox(float x, float y, bool& isFocused, const char* labelText, char* text, bool check);
 void isRecPressed(Rectangle rec, bool& check);
 void ReadFiles();
 void WriteFiles();

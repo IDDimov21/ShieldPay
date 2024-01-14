@@ -7,7 +7,7 @@ char text4[25] = { 0 }; // Text for the fourth text box
 char text5[25] = { 0 }; // Text for the fifth text box
 int textSize3 = 0, textSize4 = 0, textSize5 = 0;
 bool isTextBox3Focused = false, isTextBox4Focused = false, isTextBox5Focused = false, NumCheck = true;
-bool cursorVisibleHome = true, isSendPressed = false;
+bool cursorVisibleHome = true, isSendPressed = false, willCheck = false;
 int framesCounterHome = 0;
 string dataFolder = "/Data";
 string user, sum, pass;
@@ -57,7 +57,7 @@ void handleTextBoxInput(char* text, int& textSize, string& str, bool flag) {
             }
         }
         else {
-            if ((key >= 32) && (key < 127) && (textSize < 499)) {
+            if ((key >= 32) && (key < 127) && (textSize < 19)) {
                 // Convert the key to lowercase
                 key = tolower(key);
 
@@ -70,25 +70,22 @@ void handleTextBoxInput(char* text, int& textSize, string& str, bool flag) {
                 text[textSize] = '\0';
                 str = string(text);
             }
-            // Additional logic for the wills tab
-            else if (!flag && key == KEY_ENTER) {
-                // Update willTextString with the new will text
-                willTextString = string(text);
-                // Redraw the will text on the screen
-                DrawText(willTextString.c_str(), willTextBox.x + 10, willTextBox.y + 10, 20, BLACK);
-            }
         }
     }
 }
 
 
 void drawTextBoxes() {
-    DrawTextBox(textBox3.x, textBox3.y, isTextBox3Focused, "Username:", text3);
-    DrawTextBox(textBox4.x, textBox4.y, isTextBox4Focused, "Confirm Password:", text4);
-    DrawTextBox(textBox5.x, textBox5.y, isTextBox5Focused, "Sum:", text5);
-    DrawTextBox(willTextBox.x, willTextBox.y, isWillTextBoxFocused, "Your Will:", willText);
-    DrawRectangleRec(SaveButton, isSendPressed ? RED : MAROON);
-    DrawText("SAVE", SaveButton.x + 20, SaveButton.y + 10, 20, WHITE);
+    if (!willCheck) {
+        DrawTextBox(textBox3.x, textBox3.y, isTextBox3Focused, "Username:", text3, willCheck);
+        DrawTextBox(textBox4.x, textBox4.y, isTextBox4Focused, "Confirm Password:", text4, willCheck);
+        DrawTextBox(textBox5.x, textBox5.y, isTextBox5Focused, "Sum:", text5, willCheck);
+    }
+    else {
+        DrawTextBox(willTextBox.x, willTextBox.y, isWillTextBoxFocused, "Your Will:", willText, willCheck);
+        DrawRectangleRec(SaveButton, isSendPressed ? RED : MAROON);
+        DrawText("SAVE", SaveButton.x + 20, SaveButton.y + 10, 20, WHITE);
+    }
     if (isWillTextBoxFocused) {
         handleTextBoxInput(willText, willTextSize, willTextString, true);
     }
@@ -174,9 +171,9 @@ int home(const string& username, const string& password, double& balance) {
             }
             else {
                 DrawText("Wills", 750, 10, 28, GRAY);
-
+                willCheck = true;
                 DrawText("Your Will:", 100, 270, 28, BLACK);
-                DrawText(willTextString.c_str(), willTextBox.x + 10, willTextBox.y + 10, 20, BLACK);
+                DrawText(willTextString.c_str(), willTextBox.x + 100, willTextBox.y + 10, 20, BLACK);
 
                 drawTextBoxes();
                 isRecPressed(SaveButton, isSendPressed);
