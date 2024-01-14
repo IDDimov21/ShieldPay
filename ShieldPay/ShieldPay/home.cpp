@@ -8,14 +8,14 @@ char text5[25] = { 0 }; // Text for the fifth text box
 int textSize3 = 0, textSize4 = 0, textSize5 = 0;
 bool isTextBox3Focused = false, isTextBox4Focused = false, isTextBox5Focused = false, NumCheck = true;
 bool cursorVisibleHome = true, isSendPressed = false, willCheck = false;
+char willText[100] = { 0 };
+bool willText1 = false;
 int framesCounterHome = 0;
 string dataFolder = "/Data";
 string user, sum, pass;
 Rectangle SaveButton = { 165, 580, 100, 40 };
 Rectangle willTextBox = { 100, 300, 400, 200 };
 int willTextSize = 0;
-bool willText = false;
-bool willText1 = false;
 bool isWillTextBoxFocused = false;
 string willTextString;
 string USINGuser;
@@ -80,7 +80,7 @@ void drawTextBoxes() {
     if (!willCheck) {
         DrawTextBox(textBox3.x, textBox3.y, isTextBox3Focused, "Username:", text3, willCheck, willText1);
         DrawTextBox(textBox4.x, textBox4.y, isTextBox4Focused, "Confirm Password:", text4, willCheck, willText1);
-        DrawTextBox(textBox5.x, textBox5.y, isTextBox5Focused, "Sum:", text5, willCheck, willText);
+        DrawTextBox(textBox5.x, textBox5.y, isTextBox5Focused, "Sum:", text5, willCheck, willText1);
     }
     else {
         DrawTextBox(willTextBox.x, willTextBox.y, isWillTextBoxFocused, "Your Will:", willText, willCheck, willText1);
@@ -173,7 +173,7 @@ int home(const string& username, const string& password, double& balance) {
             else {
                 DrawText("Wills", 750, 10, 28, GRAY);
                 willCheck = true;
-                willText = true;
+                willText1 = true;
                 drawTextBoxes();
                 isRecPressed(SaveButton, isSendPressed);
 

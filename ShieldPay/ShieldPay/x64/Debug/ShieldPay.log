@@ -1,50 +1,12 @@
-﻿  home.cpp
-F:\ShieldPay\ShieldPay\ShieldPay\home.cpp(85,9): error C2664: 'void DrawTextBox(float,float,bool &,const char *,char *,bool,bool)': cannot convert argument 5 from 'bool' to 'char *'
-  F:\ShieldPay\ShieldPay\ShieldPay\home.cpp(85,87):
-  Conversion from integral type to pointer type requires reinterpret_cast, C-style cast or parenthesized function-style cast
-  F:\ShieldPay\ShieldPay\ShieldPay\mainMenu.hpp(12,6):
-  see declaration of 'DrawTextBox'
-  F:\ShieldPay\ShieldPay\ShieldPay\home.cpp(85,9):
-  while trying to match the argument list '(float, float, bool, const char [11], bool, bool, bool)'
-  
-F:\ShieldPay\ShieldPay\ShieldPay\home.cpp(87,58): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-F:\ShieldPay\ShieldPay\ShieldPay\home.cpp(87,39): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-F:\ShieldPay\ShieldPay\ShieldPay\home.cpp(90,9): error C2664: 'void handleTextBoxInput(char *,int &,std::string &,bool)': cannot convert argument 1 from 'bool' to 'char *'
-  F:\ShieldPay\ShieldPay\ShieldPay\home.cpp(90,28):
-  Conversion from integral type to pointer type requires reinterpret_cast, C-style cast or parenthesized function-style cast
-  F:\ShieldPay\ShieldPay\ShieldPay\home.cpp(34,6):
-  see declaration of 'handleTextBoxInput'
-  F:\ShieldPay\ShieldPay\ShieldPay\home.cpp(90,9):
-  while trying to match the argument list '(bool, int, std::string, bool)'
-  
-F:\ShieldPay\ShieldPay\ShieldPay\home.cpp(181,21): error C2664: 'void SaveToFile(const char *)': cannot convert argument 1 from 'bool' to 'const char *'
-  F:\ShieldPay\ShieldPay\ShieldPay\home.cpp(181,32):
-  Conversion from integral type to pointer type requires reinterpret_cast, C-style cast or parenthesized function-style cast
-  F:\ShieldPay\ShieldPay\ShieldPay\home.cpp(107,6):
-  see declaration of 'SaveToFile'
-  F:\ShieldPay\ShieldPay\ShieldPay\home.cpp(181,21):
-  while trying to match the argument list '(bool)'
-  
-  mainMenu.cpp
-F:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(148,30): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-F:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(148,25): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-F:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(150,18): error C2065: 'willText': undeclared identifier
-F:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(153,33): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-F:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(153,26): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-F:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(157,21): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-F:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(158,45): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-F:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(158,29): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-F:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(172,5): error C2660: 'DrawTextBox': function does not take 6 arguments
-  F:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(136,6):
-  see declaration of 'DrawTextBox'
-  F:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(172,5):
-  while trying to match the argument list '(int, int, bool, const char [10], char [25], bool)'
-  
-F:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(173,5): error C2660: 'DrawTextBox': function does not take 6 arguments
-  F:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(136,6):
-  see declaration of 'DrawTextBox'
-  F:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(173,5):
-  while trying to match the argument list '(int, int, bool, const char [10], char [25], bool)'
-  
-  transaction.cpp
-  Generating Code...
+﻿  mainMenu.cpp
+D:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(148,30): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(148,25): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(150,35): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(150,26): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(153,33): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(153,26): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(159,53): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(161,55): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(162,46): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\ShieldPay\ShieldPay\ShieldPay\mainMenu.cpp(162,29): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  ShieldPay.vcxproj -> D:\ShieldPay\ShieldPay\x64\Debug\ShieldPay.exe

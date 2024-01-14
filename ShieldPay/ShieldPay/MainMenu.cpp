@@ -10,7 +10,7 @@ bool isTextBox1Focused = false, isTextBox2Focused = false;
 int framesCounter = 0;
 double USINGbalance;
 bool cursorVisible = true, check = false;
-bool loginPressed = false, registerPressed = false, flag = false;
+bool loginPressed = false, registerPressed = false, flag = false, willFlag = false;
 string username, password, usernameFromFile, passwordFromFile, balanceFromFile, USINGpass;
 fstream Usernames, Passwords, Balances;
 Rectangle textBox1 = { screenWidth / 2 - 120, screenHeight / 2 - 95, 240, 40 };
@@ -147,15 +147,19 @@ void DrawTextBox(float x, float y, bool& isFocused, const char* labelText, char*
 
     DrawText(labelText, x, y - 30, 20, WHITE);
     if (isInWill) {
-        DrawText(willText, x + 10, y + 10, 20, BLACK);
+        DrawText(text, x + 130, y + 10, 20, BLACK);
     }
     else {
         DrawText(text, x + 7, y + 9, 20, BLACK);
     }
 
     if (isFocused && cursorVisible) {
-        int cursorX = x + 7 + MeasureText(text, 20) + 5;
-        DrawLine(cursorX, y + 7, cursorX, y + 27, WHITE);
+        int cursorX;
+        if(!isInWill)
+            cursorX = x + 7 + MeasureText(text, 20) + 5;
+        else
+            cursorX = x + 129 + MeasureText(text, 20) + 5;
+        DrawLine(cursorX, y + 10, cursorX, y + 27, WHITE);
     }
 
     if (CheckCollisionPointRec(GetMousePosition(), rect)) {
@@ -169,8 +173,8 @@ void DrawTextBox(float x, float y, bool& isFocused, const char* labelText, char*
 }
 
 void DrawLoginBoxes() {
-    DrawTextBox(screenWidth / 2 - 120, screenHeight / 2 - 95, isTextBox1Focused, "Username:", text1, check);
-    DrawTextBox(screenWidth / 2 - 120, screenHeight / 2 - 15, isTextBox2Focused, "Password:", text2, check);
+    DrawTextBox(screenWidth / 2 - 120, screenHeight / 2 - 95, isTextBox1Focused, "Username:", text1, check, willFlag);
+    DrawTextBox(screenWidth / 2 - 120, screenHeight / 2 - 15, isTextBox2Focused, "Password:", text2, check, willFlag);
 
     if (isTextBox1Focused || isTextBox2Focused) {
         HandleTextInput();
