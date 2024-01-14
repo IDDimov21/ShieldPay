@@ -15,7 +15,7 @@ string username, password, usernameFromFile, passwordFromFile, balanceFromFile, 
 fstream Usernames, Passwords, Balances;
 Rectangle textBox1 = { screenWidth / 2 - 120, screenHeight / 2 - 95, 240, 40 };
 Rectangle textBox2 = { screenWidth / 2 - 120, screenHeight / 2 - 15, 240, 40 };
-string dataFolderPath = "F:/ShieldPay/ShieldPay/ShieldPay/Data";
+string dataFolderPath = "D:/ShieldPay/ShieldPay/ShieldPay/Data";
 
 void isRecPressed(Rectangle rec, bool& check) {
     if (CheckCollisionPointRec(GetMousePosition(), rec)) {

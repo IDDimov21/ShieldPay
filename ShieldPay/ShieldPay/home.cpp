@@ -7,27 +7,13 @@ char text3[25] = { 0 }; // Text for the third text box
 char text4[25] = { 0 }; // Text for the fourth text box
 char text5[25] = { 0 }; // Text for the fifth text box
 int textSize3 = 0, textSize4 = 0, textSize5 = 0;
-bool isTextBox3Focused = false, isTextBox4Focused = false, isTextBox5Focused = false;
+bool isTextBox3Focused = false, isTextBox4Focused = false, isTextBox5Focused = false, NumCheck = true;
 int framesCounterHome = 0;
 bool cursorVisibleHome = true;
+string user, sum, pass;
 
-void drawTextBoxes() {
-    DrawTextBox(textBox3.x, textBox3.y, isTextBox3Focused, "Username:", text3);
-    DrawTextBox(textBox4.x, textBox4.y, isTextBox4Focused, "Confirm Password:", text4);
-    DrawTextBox(textBox5.x, textBox5.y, isTextBox5Focused, "Sum:", text5);
 
-    if (isTextBox3Focused) {
-        handleTextBoxInput(text3, textSize3);
-    }
-    else if (isTextBox4Focused) {
-        handleTextBoxInput(text4, textSize4);
-    }
-    else if (isTextBox5Focused) {
-        handleTextBoxInput(text5, textSize5);
-    }
-}
-
-void handleTextBoxInput(char* text, int& textSize) {
+void handleTextBoxInput(char* text, int& textSize, string& str, bool flag) {
     // Handle text input for the focused textbox
     framesCounterHome++;
     if (framesCounterHome >= 30) {
@@ -38,19 +24,59 @@ void handleTextBoxInput(char* text, int& textSize) {
     int key = GetKeyPressed();
     if (key != 0) {
         // Handle key presses for the focused textbox
-        if ((key >= 32) && (key < 127) && (textSize < 19)) {
-            // Convert the key to lowercase
-            key = tolower(key);
+        if (flag) {
+            if ((key >= 32) && (key < 127) && (textSize < 19)) {
+                // Convert the key to lowercase
+                key = tolower(key);
 
-            text[textSize] = (char)key;
-            textSize++;
+                text[textSize] = (char)key;
+                textSize++;
+                str = string(text);
+            }
+            else if (key == KEY_BACKSPACE && textSize > 0) {
+                textSize--;
+                text[textSize] = '\0';
+                str = string(text);
+            }
         }
-        else if (key == KEY_BACKSPACE && textSize > 0) {
-            textSize--;
-            text[textSize] = '\0';
+        else {
+            if ((key >= 48) && (key < 58) && (textSize < 19)) {
+                // Convert the key to lowercase
+                key = tolower(key);
+
+                text[textSize] = (char)key;
+                textSize++;
+                str = string(text);
+            }
+            else if (key == KEY_BACKSPACE && textSize > 0) {
+                textSize--;
+                text[textSize] = '\0';
+                str = string(text);
+            }
         }
+
     }
 }
+
+void drawTextBoxes() {
+    DrawTextBox(textBox3.x, textBox3.y, isTextBox3Focused, "Username:", text3);
+    DrawTextBox(textBox4.x, textBox4.y, isTextBox4Focused, "Confirm Password:", text4);
+    DrawTextBox(textBox5.x, textBox5.y, isTextBox5Focused, "Sum:", text5);
+
+    if (isTextBox3Focused) {
+        NumCheck = true;
+        handleTextBoxInput(text3, textSize3, user, NumCheck);
+    }
+    else if (isTextBox4Focused) {
+        NumCheck = true;
+        handleTextBoxInput(text4, textSize4, pass, NumCheck);
+    }
+    else if (isTextBox5Focused) {
+        NumCheck = false;
+        handleTextBoxInput(text5, textSize5, sum, NumCheck);
+    }
+}
+
 
 int home(const string& username, const string& password, double& balance) {
     SetTargetFPS(60);
