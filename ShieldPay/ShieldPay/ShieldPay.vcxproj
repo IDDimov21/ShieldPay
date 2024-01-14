@@ -145,10 +145,12 @@
   <ItemGroup>
     <ClCompile Include="home.cpp" />
     <ClCompile Include="mainMenu.cpp" />
+    <ClCompile Include="transaction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="home.hpp" />
     <ClInclude Include="mainMenu.hpp" />
+    <ClInclude Include="transaction.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -21,12 +21,18 @@
     <ClCompile Include="home.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="transaction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mainMenu.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="home.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="transaction.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

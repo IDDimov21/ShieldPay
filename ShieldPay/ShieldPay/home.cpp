@@ -1,15 +1,15 @@
 #include "home.hpp"
 
-Rectangle textBox3 = { 100, 300, 240, 40 };
-Rectangle textBox4 = { 100, 380, 240, 40 };
-Rectangle textBox5 = { 100, 450, 240, 40 };
+Rectangle textBox3 = { 100, 300, 240, 40 }, textBox4 = { 100, 380, 240, 40 }, textBox5 = { 100, 450, 240, 40 };
+Rectangle Send = { 165, 520, 100, 40 };
 char text3[25] = { 0 }; // Text for the third text box
 char text4[25] = { 0 }; // Text for the fourth text box
 char text5[25] = { 0 }; // Text for the fifth text box
 int textSize3 = 0, textSize4 = 0, textSize5 = 0;
 bool isTextBox3Focused = false, isTextBox4Focused = false, isTextBox5Focused = false, NumCheck = true;
+bool cursorVisibleHome = true, isSendPressed = false;
 int framesCounterHome = 0;
-bool cursorVisibleHome = true;
+string dataFolder = "D:/ShieldPay/ShieldPay/ShieldPay/Data";
 string user, sum, pass;
 
 
@@ -119,7 +119,10 @@ int home(const string& username, const string& password, double& balance) {
                 Trans = false;
             DrawText("Transactions", 520, 10, 28, GRAY);
             DrawText("Transmit money", 180, 220, 40, BLACK);
+            DrawText("SEND", 165, 520, 32, BLACK);
             drawTextBoxes();
+            isRecPressed(Send, isSendPressed);
+            transaction(username, password, balance, isSendPressed, pass, user, sum, dataFolder);
         }
         else
             DrawText("Transactions", 520, 10, 28, WHITE);
