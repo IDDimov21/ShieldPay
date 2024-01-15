@@ -20,9 +20,21 @@ bool isWillTextBoxFocused = false;
 string willTextString;
 string USINGuser;
 
+string GetLoggedInUsername() {
+    ifstream userFile("Usernames.txt");
+    string loggedInUsername;
+    if (userFile.is_open()) {
+        getline(userFile, loggedInUsername);
+        userFile.close();
+    }
+    return loggedInUsername;
+}
 
 void LoadWillFromFile() {
-    ifstream file("Data/wills.txt");
+    string loggedInUsername = GetLoggedInUsername();
+    cout << loggedInUsername;
+    string filename = "Data/" + loggedInUsername + "_wills.txt";
+    ifstream file(filename.c_str());
     if (file.is_open()) {
         // Read the entire contents of the file into willTextString
         stringstream buffer;
@@ -105,8 +117,9 @@ void drawTextBoxes() {
 }
 
 
-void SaveToFile(const char* text) {
-    ofstream file("Data/wills.txt");
+void SaveToFile(const char* text, const string& username) {
+    string filename = "Data/" + username + "_wills.txt";
+    ofstream file(filename.c_str());;
     if (file.is_open()) {
         cout << "Saving to file: " << text << endl;  // Debug output
         file << text << endl;
@@ -116,7 +129,7 @@ void SaveToFile(const char* text) {
 
 int home(const string& username, const string& password, double& balance) {
     SetTargetFPS(60);
-
+    
     Texture2D nav = LoadTexture("Images/Bar.png");
     Texture2D backg = LoadTexture("Images/background.png");
 
@@ -179,7 +192,7 @@ int home(const string& username, const string& password, double& balance) {
 
                 // Additional logic for the Save button
                 if (isSendPressed) {
-                    SaveToFile(willText);
+                    SaveToFile(willText, username);
                     isSendPressed = false;
                 }
             }
