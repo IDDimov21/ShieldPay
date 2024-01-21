@@ -30,10 +30,8 @@ string GetLoggedInUsername() {
     return loggedInUsername;
 }
 
-void LoadWillFromFile() {
-    string loggedInUsername = GetLoggedInUsername();
-    cout << loggedInUsername;
-    string filename = "Data/" + loggedInUsername + "_wills.txt";
+void LoadWillFromFile(const string& username) {
+    string filename = "Data/" + username + "_wills.txt";
     ifstream file(filename.c_str());
     if (file.is_open()) {
         // Read the entire contents of the file into willTextString
@@ -41,11 +39,16 @@ void LoadWillFromFile() {
         buffer << file.rdbuf();
         willTextString = buffer.str();
         file.close();
+
+        // Set the loaded text into willText, ensuring null-termination
+        willTextString.copy(willText, sizeof(willText) - 1);
+        willText[willTextString.size()] = '\0';
     }
 }
 
 void handleTextBoxInput(char* text, int& textSize, string& str, bool flag) {
     framesCounterHome++;
+
     if (framesCounterHome >= 30) {
         framesCounterHome = 0;
         cursorVisibleHome = !cursorVisibleHome;
@@ -55,38 +58,29 @@ void handleTextBoxInput(char* text, int& textSize, string& str, bool flag) {
     if (key != 0) {
         // Handle key presses for the focused textbox
         if (flag) {
-            if ((key >= 32) && (key < 127) && (textSize < 19)) {
+            if ((key >= 32) && (key < 127) && (textSize < 99)) {
                 // Convert the key to lowercase
                 key = tolower(key);
 
-                text[textSize] = (char)key;
-                textSize++;
-                str = string(text);
-            }
-            else if (key == KEY_BACKSPACE && textSize > 0) {
-                textSize--;
-                text[textSize] = '\0';
-                str = string(text);
-            }
-        }
-        else {
-            if ((key >= 32) && (key < 127) && (textSize < 19)) {
-                // Convert the key to lowercase
-                key = tolower(key);
+                // If there's existing text, append the new character
+                if (textSize < 99) {
+                    text[textSize] = (char)key;
+                    textSize++;
+                    text[textSize] = '\0';  // Ensure null-termination
 
-                text[textSize] = (char)key;
-                textSize++;
-                str = string(text);
+                    str = string(text);
+                }
             }
             else if (key == KEY_BACKSPACE && textSize > 0) {
+                // Handle backspace by shifting characters to the left
                 textSize--;
-                text[textSize] = '\0';
+                text[textSize] = '\0';  // Ensure null-termination
+
                 str = string(text);
             }
         }
     }
 }
-
 
 void drawTextBoxes() {
     if (!willCheck) {
@@ -129,7 +123,7 @@ void SaveToFile(const char* text, const string& username) {
 
 int home(const string& username, const string& password, double& balance) {
     SetTargetFPS(60);
-    
+
     Texture2D nav = LoadTexture("Images/Bar.png");
     Texture2D backg = LoadTexture("Images/background.png");
 
@@ -137,7 +131,7 @@ int home(const string& username, const string& password, double& balance) {
 
     bool Bal = true, Trans = false, Wil = false;
 
-    LoadWillFromFile();  // Load existing will text
+    LoadWillFromFile(username);
 
     while (!WindowShouldClose()) {
         BeginDrawing();
