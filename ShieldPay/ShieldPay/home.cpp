@@ -81,7 +81,6 @@ void handleTextBoxInput(char* text, int& textSize, string& str, bool flag) {
                 str = string(text);
             }
         }
-        // Add the following block of code to handle key presses for the recipient's text box
         else if (isTextBoxRecipientFocused) {
             if ((key >= 32) && (key < 127) && (textSizeRecipient < 99)) {
                 key = tolower(key);
