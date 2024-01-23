@@ -1,4 +1,2 @@
-aaa
-ivan
 kevin
-todor1
+aaa

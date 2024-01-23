@@ -20,6 +20,11 @@ bool isWillTextBoxFocused = false;
 string willTextString;
 string USINGuser;
 
+Rectangle textBoxRecipient = { 100, 520, 100, 40 };  // New text box for recipient's username
+char textRecipient[25] = { 0 };  // Text for the recipient's username text box
+int textSizeRecipient = 0;
+bool isTextBoxRecipientFocused = false;
+
 string GetLoggedInUsername() {
     ifstream userFile("Usernames.txt");
     string loggedInUsername;
@@ -59,24 +64,41 @@ void handleTextBoxInput(char* text, int& textSize, string& str, bool flag) {
         // Handle key presses for the focused textbox
         if (flag) {
             if ((key >= 32) && (key < 127) && (textSize < 99)) {
-                // Convert the key to lowercase
                 key = tolower(key);
 
-                // If there's existing text, append the new character
                 if (textSize < 99) {
                     text[textSize] = (char)key;
                     textSize++;
-                    text[textSize] = '\0';  // Ensure null-termination
+                    text[textSize] = '\0';
 
                     str = string(text);
                 }
             }
             else if (key == KEY_BACKSPACE && textSize > 0) {
-                // Handle backspace by shifting characters to the left
                 textSize--;
-                text[textSize] = '\0';  // Ensure null-termination
+                text[textSize] = '\0';
 
                 str = string(text);
+            }
+        }
+        // Add the following block of code to handle key presses for the recipient's text box
+        else if (isTextBoxRecipientFocused) {
+            if ((key >= 32) && (key < 127) && (textSizeRecipient < 99)) {
+                key = tolower(key);
+
+                if (textSizeRecipient < 99) {
+                    textRecipient[textSizeRecipient] = (char)key;
+                    textSizeRecipient++;
+                    textRecipient[textSizeRecipient] = '\0';
+
+                    str = string(textRecipient);
+                }
+            }
+            else if (key == KEY_BACKSPACE && textSizeRecipient > 0) {
+                textSizeRecipient--;
+                textRecipient[textSizeRecipient] = '\0';
+
+                str = string(textRecipient);
             }
         }
     }
@@ -90,10 +112,16 @@ void drawTextBoxes() {
     }
     else {
         DrawTextBox(willTextBox.x, willTextBox.y - 100, isWillTextBoxFocused, "Your Will:", willText, willCheck, willText1);
+
         DrawRectangleRec(SaveButton, isSendPressed ? RED : MAROON);
         DrawText("SAVE", SaveButton.x + 20, SaveButton.y + 10, 20, WHITE);
+        DrawTextBox(textBoxRecipient.x, textBoxRecipient.y, isTextBoxRecipientFocused, "Recipient:", textRecipient, willCheck, willText1);
     }
-    if (isWillTextBoxFocused) {
+
+    if (isTextBoxRecipientFocused) {
+        handleTextBoxInput(textRecipient, textSizeRecipient, willTextString, true);
+    }
+    else if (isWillTextBoxFocused) {
         handleTextBoxInput(willText, willTextSize, willTextString, true);
     }
     else if (isTextBox3Focused) {
@@ -111,13 +139,23 @@ void drawTextBoxes() {
 }
 
 
-void SaveToFile(const char* text, const string& username) {
-    string filename = "Data/" + username + "_wills.txt";
-    ofstream file(filename.c_str());;
-    if (file.is_open()) {
-        cout << "Saving to file: " << text << endl;  // Debug output
-        file << text << endl;
-        file.close();
+void SaveToFile(const char* text, const string& senderUsername, const string& recipientUsername) {
+    // Save the will to the sender's file
+    string senderFilename = "Data/" + senderUsername + "_wills.txt";
+    ofstream senderFile(senderFilename.c_str());
+    if (senderFile.is_open()) {
+        cout << "Saving to file (sender): " << text << endl;  // Debug output
+        senderFile << text << endl;
+        senderFile.close();
+    }
+
+    // Save the will to the recipient's file
+    string recipientFilename = "Data/" + recipientUsername + "_receivedwills.txt";
+    ofstream recipientFile(recipientFilename.c_str(), ios::app);  // Append to existing file
+    if (recipientFile.is_open()) {
+        cout << "Saving to file (recipient): " << text << endl;  // Debug output
+        recipientFile << text << endl;
+        recipientFile.close();
     }
 }
 
@@ -181,12 +219,27 @@ int home(const string& username, const string& password, double& balance) {
                 DrawText("Wills", 750, 10, 28, GRAY);
                 willCheck = true;
                 willText1 = true;
+
+                // Load received wills for the logged-in user
+                string recipientFilename = "Data/" + username + "_receivedwills.txt";
+                ifstream recipientFile(recipientFilename.c_str());
+                string receivedWills;
+
+                if (recipientFile.is_open()) {
+                    stringstream buffer;
+                    buffer << recipientFile.rdbuf();
+                    receivedWills = buffer.str();
+                    recipientFile.close();
+                }
+                cout << receivedWills << endl;
+                // Draw text boxes and buttons
                 drawTextBoxes();
                 isRecPressed(SaveButton, isSendPressed);
 
                 // Additional logic for the Save button
                 if (isSendPressed) {
-                    SaveToFile(willText, username);
+                    string recipientUsername = textRecipient;
+                    SaveToFile(willText, username, recipientUsername);
                     isSendPressed = false;
                 }
             }
