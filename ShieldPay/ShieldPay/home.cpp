@@ -80,6 +80,14 @@ void handleTextBoxInput(char* text, int& textSize, string& str, bool flag) {
 
                 str = string(text);
             }
+            else if (key == KEY_ENTER && textSize < 99) {
+                // Handle Enter key press to add a new line
+                text[textSize] = '\n';
+                textSize++;
+                text[textSize] = '\0';
+
+                str = string(text);
+            }
         }
         else if (isTextBoxRecipientFocused) {
             if ((key >= 32) && (key < 127) && (textSizeRecipient < 99)) {
@@ -111,7 +119,6 @@ void drawTextBoxes() {
     }
     else {
         DrawTextBox(willTextBox.x, willTextBox.y - 100, isWillTextBoxFocused, "Your Will:", willText, willCheck, willText1);
-
         DrawRectangleRec(SaveButton, isSendPressed ? RED : MAROON);
         DrawText("SAVE", SaveButton.x + 20, SaveButton.y + 10, 20, WHITE);
         DrawTextBox(textBoxRecipient.x, textBoxRecipient.y, isTextBoxRecipientFocused, "Recipient:", textRecipient, willCheck, willText1);
