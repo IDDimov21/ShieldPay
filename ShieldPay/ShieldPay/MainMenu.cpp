@@ -136,29 +136,23 @@ void WriteFiles() {
 void DrawTextBox(float x, float y, bool& isFocused, const char* labelText, char* text, bool check, bool isInWill) {
     Rectangle rect;
     if (!check) {
-        rect = { x, y, 240, 40 };
+        rect = { x, y, 240, 40 }; // Standard text box size
     }
     else {
-        rect = { x + 120, y, 600,  300 };
+        rect = { x, y, 500, 400 }; // Adjusted will text box size
     }
-        
+
     DrawRectangleRec(rect, isFocused ? GRAY : LIGHTGRAY);
     DrawRectangleLinesEx(rect, 2.5, isFocused ? DARKGRAY : DARKGRAY);
 
     DrawText(labelText, x, y - 30, 20, WHITE);
-    if (isInWill) {
-        DrawText(text, x + 130, y + 10, 20, BLACK);
-    }
-    else {
-        DrawText(text, x + 7, y + 9, 20, BLACK);
-    }
+
+    // Adjust cursorX calculation based on isInWill
+    int cursorX = x + 7 + MeasureText(text, 20) + 5;
+
+    DrawText(text, x + 7, y + 10, 20, BLACK);
 
     if (isFocused && cursorVisible) {
-        int cursorX;
-        if(!isInWill)
-            cursorX = x + 7 + MeasureText(text, 20) + 5;
-        else
-            cursorX = x + 129 + MeasureText(text, 20) + 5;
         DrawLine(cursorX, y + 10, cursorX, y + 27, WHITE);
     }
 

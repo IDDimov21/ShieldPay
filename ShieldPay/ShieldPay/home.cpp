@@ -13,8 +13,8 @@ bool willText1 = false;
 int framesCounterHome = 0;
 string dataFolder = "/Data";
 string user, sum, pass;
-Rectangle SaveButton = { 165, 580, 100, 40 };
-Rectangle willTextBox = { 100, 300, 400, 200 };
+Rectangle SaveButton = { 70, 580, 100, 40 };
+Rectangle willTextBox = { 100, 300, 240, 100 };
 int willTextSize = 0;
 bool isWillTextBoxFocused = false;
 string willTextString;
@@ -89,7 +89,7 @@ void drawTextBoxes() {
         DrawTextBox(textBox5.x, textBox5.y, isTextBox5Focused, "Sum:", text5, willCheck, willText1);
     }
     else {
-        DrawTextBox(willTextBox.x, willTextBox.y, isWillTextBoxFocused, "Your Will:", willText, willCheck, willText1);
+        DrawTextBox(willTextBox.x, willTextBox.y - 100, isWillTextBoxFocused, "Your Will:", willText, willCheck, willText1);
         DrawRectangleRec(SaveButton, isSendPressed ? RED : MAROON);
         DrawText("SAVE", SaveButton.x + 20, SaveButton.y + 10, 20, WHITE);
     }
