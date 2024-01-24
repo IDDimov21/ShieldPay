@@ -151,7 +151,7 @@ void drawTextBoxes() {
 
 void SaveToFile(const char* text, const string& senderUsername, const string& recipientUsername) {
     // Save the will to the sender's file
-    string senderFilename = "Data/" + senderUsername + "_wills.txt";
+    string senderFilename = "Data/Wills/" + senderUsername + "_wills.txt";
     ofstream senderFile(senderFilename.c_str());
     if (senderFile.is_open()) {
         cout << "Saving to file (sender): " << text << endl;  // Debug output
@@ -160,7 +160,7 @@ void SaveToFile(const char* text, const string& senderUsername, const string& re
     }
 
     // Save the will to the recipient's file
-    string recipientFilename = "Data/" + recipientUsername + "_receivedwills.txt";
+    string recipientFilename = "Data/ReceivedWills/" + recipientUsername + "_receivedwills.txt";
     ofstream recipientFile(recipientFilename.c_str(), ios::app);  // Append to existing file
     if (recipientFile.is_open()) {
         cout << "Saving to file (recipient): " << text << endl;  // Debug output
@@ -231,7 +231,7 @@ int home(const string& username, const string& password, double& balance) {
                 willText1 = true;
 
                 // Load received wills for the logged-in user
-                string recipientFilename = "Data/" + username + "_receivedwills.txt";
+                string recipientFilename = "Data/ReceivedWills/" + username + "_receivedwills.txt";
                 ifstream recipientFile(recipientFilename.c_str());
                 string receivedWills;
 

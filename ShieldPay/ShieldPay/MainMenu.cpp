@@ -4,7 +4,8 @@ using namespace std;
 Rectangle Login = { screenWidth / 2 - 80, 400, 170, 45 }, Register = { screenWidth / 2 - 50, 450, 160, 40 };
 Texture2D NavBar, background, blockBG, login, regis;
 char text1[25] = { 0 }; // Text for the first text box
-char text2[25] = { 0 }; // Text for the second text box
+char text2[25] = { 0 };
+char pass[25] = { 0 };// Text for the second text box
 int textSize1 = 0, textSize2 = 0;
 bool isTextBox1Focused = false, isTextBox2Focused = false;
 int framesCounter = 0;
@@ -61,6 +62,7 @@ void HandleTextInput() {
         }
         else if (isTextBox2Focused && (key >= 32) && (key < 127) && (textSize2 < 19)) {
             text2[textSize2] = (char)key;
+            pass[textSize2] = '*';
             textSize2++;
             text2[textSize2 - 1] = tolower(text2[textSize2 - 1]);
             password = string(text2);
@@ -68,6 +70,7 @@ void HandleTextInput() {
         else if (isTextBox2Focused && key == KEY_BACKSPACE && textSize2 > 0) {
             textSize2--;
             text2[textSize2] = '\0';
+            pass[textSize2] = '\0';
             text2[textSize2 - 1] = tolower(text2[textSize2 - 1]);
             password = string(text2);
         }
@@ -168,7 +171,7 @@ void DrawTextBox(float x, float y, bool& isFocused, const char* labelText, char*
 
 void DrawLoginBoxes() {
     DrawTextBox(screenWidth / 2 - 120, screenHeight / 2 - 95, isTextBox1Focused, "Username:", text1, check, willFlag);
-    DrawTextBox(screenWidth / 2 - 120, screenHeight / 2 - 15, isTextBox2Focused, "Password:", text2, check, willFlag);
+    DrawTextBox(screenWidth / 2 - 120, screenHeight / 2 - 15, isTextBox2Focused, "Password:", pass, check, willFlag);
 
     if (isTextBox1Focused || isTextBox2Focused) {
         HandleTextInput();
