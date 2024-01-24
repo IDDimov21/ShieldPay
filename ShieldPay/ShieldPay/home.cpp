@@ -20,7 +20,7 @@ bool isWillTextBoxFocused = false;
 string willTextString;
 string USINGuser;
 
-Rectangle textBoxRecipient = { 100, 520, 100, 40 };  // New text box for recipient's username
+Rectangle textBoxRecipient = { screenWidth / 2 + 150, screenHeight / 2 - 150, 240, 40 };
 char textRecipient[25] = { 0 };  // Text for the recipient's username text box
 int textSizeRecipient = 0;
 bool isTextBoxRecipientFocused = false;
@@ -121,7 +121,7 @@ void drawTextBoxes() {
         DrawTextBox(willTextBox.x, willTextBox.y - 100, isWillTextBoxFocused, "Your Will:", willText, willCheck, willText1);
         DrawRectangleRec(SaveButton, isSendPressed ? RED : MAROON);
         DrawText("SAVE", SaveButton.x + 20, SaveButton.y + 10, 20, WHITE);
-        DrawTextBox(textBoxRecipient.x, textBoxRecipient.y, isTextBoxRecipientFocused, "Recipient:", textRecipient, willCheck, willText1);
+        DrawTextBox(textBoxRecipient.x, textBoxRecipient.y, isTextBoxRecipientFocused, "Recipient:", textRecipient, false, willText1);
     }
 
     if (isTextBoxRecipientFocused) {
