@@ -1,5 +1,5 @@
 #include "home.hpp"
-#include <sstream>
+
 Rectangle textBox3 = { 100, 300, 240, 40 }, textBox4 = { 100, 380, 240, 40 }, textBox5 = { 100, 450, 240, 40 };
 Rectangle Send = { 165, 520, 100, 40 };
 char text3[25] = { 0 }; // Text for the third text box
@@ -40,9 +40,10 @@ void LoadWillFromFile(const string& username) {
     ifstream file(filename.c_str());
     if (file.is_open()) {
         // Read the entire contents of the file into willTextString
-        stringstream buffer;
-        buffer << file.rdbuf();
-        willTextString = buffer.str();
+        string line;
+        while (getline(file, line)) {
+            willTextString += line + "\n";
+        }
         file.close();
 
         // Set the loaded text into willText, ensuring null-termination
@@ -232,12 +233,13 @@ int home(const string& username, const string& password, double& balance) {
                 string receivedWills;
 
                 if (recipientFile.is_open()) {
-                    stringstream buffer;
-                    buffer << recipientFile.rdbuf();
-                    receivedWills = buffer.str();
+                    string line;
+                    while (getline(recipientFile, line)) {
+                        receivedWills += line + "\n";
+                    }
                     recipientFile.close();
+                    cout << receivedWills << endl;
                 }
-                cout << receivedWills << endl;
                 // Draw text boxes and buttons
                 drawTextBoxes();
                 isRecPressed(SaveButton, isSendPressed);
