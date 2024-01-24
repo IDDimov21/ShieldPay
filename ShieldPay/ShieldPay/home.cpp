@@ -118,13 +118,16 @@ void drawTextBoxes() {
         DrawTextBox(textBox4.x, textBox4.y, isTextBox4Focused, "Confirm Password:", text4, willCheck, willText1);
         DrawTextBox(textBox5.x, textBox5.y, isTextBox5Focused, "Sum:", text5, willCheck, willText1);
     }
-    else {
-        DrawTextBox(willTextBox.x, willTextBox.y - 100, isWillTextBoxFocused, "Your Will:", willText, willCheck, willText1);
-        DrawRectangleRec(SaveButton, isSendPressed ? RED : MAROON);
-        DrawText("SAVE", SaveButton.x + 20, SaveButton.y + 10, 20, WHITE);
-        DrawTextBox(textBoxRecipient.x, textBoxRecipient.y, isTextBoxRecipientFocused, "Recipient:", textRecipient, false, willText1);
-    }
+    else{
+            // Draw transparent gray block behind received wills
+            DrawRectangle(willTextBox.x + willTextBox.width + 70, willTextBox.y - 100, 600, willTextBox.height + 20, Fade(GRAY, 0.5f));
 
+            DrawTextBox(willTextBox.x, willTextBox.y - 100, isWillTextBoxFocused, "Your Will:", willText, willCheck, willText1);
+            DrawText(willTextString.c_str(), willTextBox.x + willTextBox.width + 80, willTextBox.y - 80, 20, BLACK);
+            DrawRectangleRec(SaveButton, isSendPressed ? RED : MAROON);
+            DrawText("SAVE", SaveButton.x + 20, SaveButton.y + 10, 20, WHITE);
+            DrawTextBox(textBoxRecipient.x, textBoxRecipient.y, isTextBoxRecipientFocused, "Recipient:", textRecipient, false, willText1);
+    }
     if (isTextBoxRecipientFocused) {
         handleTextBoxInput(textRecipient, textSizeRecipient, willTextString, true);
     }
@@ -238,8 +241,13 @@ int home(const string& username, const string& password, double& balance) {
                         receivedWills += line + "\n";
                     }
                     recipientFile.close();
-                    cout << receivedWills << endl;
+                    willTextString = receivedWills;
                 }
+                else {
+                    // Display "No received wills" if there are no received wills
+                    willTextString = "No received wills";
+                }
+
                 // Draw text boxes and buttons
                 drawTextBoxes();
                 isRecPressed(SaveButton, isSendPressed);
