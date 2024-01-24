@@ -120,10 +120,10 @@ void drawTextBoxes() {
     }
     else{
             // Draw transparent gray block behind received wills
-            DrawRectangle(willTextBox.x + willTextBox.width + 70, willTextBox.y - 100, 600, willTextBox.height + 20, Fade(GRAY, 0.5f));
+        DrawRectangle(willTextBox.x + 150 + willTextBox.width + 140, willTextBox.y - 50, 400, 350, Fade(GRAY, 0.5f));
 
             DrawTextBox(willTextBox.x, willTextBox.y - 100, isWillTextBoxFocused, "Your Will:", willText, willCheck, willText1);
-            DrawText(willTextString.c_str(), willTextBox.x + willTextBox.width + 80, willTextBox.y - 80, 20, BLACK);
+            DrawText(willTextString.c_str(), willTextBox.x + willTextBox.width + 300, willTextBox.y - 20, 20, BLACK);
             DrawRectangleRec(SaveButton, isSendPressed ? RED : MAROON);
             DrawText("SAVE", SaveButton.x + 20, SaveButton.y + 10, 20, WHITE);
             DrawTextBox(textBoxRecipient.x, textBoxRecipient.y, isTextBoxRecipientFocused, "Recipient:", textRecipient, false, willText1);
