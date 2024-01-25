@@ -36,7 +36,7 @@ string GetLoggedInUsername() {
 }
 
 void LoadWillFromFile(const string& username) {
-    string filename = "Data/" + username + "_wills.txt";
+    string filename = "Data/Wills/" + username + "_wills.txt";
     ifstream file(filename.c_str());
     if (file.is_open()) {
         // Read the entire contents of the file into willTextString
@@ -148,24 +148,46 @@ void drawTextBoxes() {
     }
 }
 
-
 void SaveToFile(const char* text, const string& senderUsername, const string& recipientUsername) {
-    // Save the will to the sender's file
     string senderFilename = "Data/Wills/" + senderUsername + "_wills.txt";
     ofstream senderFile(senderFilename.c_str());
     if (senderFile.is_open()) {
-        cout << "Saving to file (sender): " << text << endl;  // Debug output
         senderFile << text << endl;
         senderFile.close();
     }
 
     // Save the will to the recipient's file
     string recipientFilename = "Data/ReceivedWills/" + recipientUsername + "_receivedwills.txt";
-    ofstream recipientFile(recipientFilename.c_str(), ios::app);  // Append to existing file
+    ifstream recipientFile(recipientFilename.c_str());
+    string receivedWills;
+
+    bool senderEntryExists = false;
+
     if (recipientFile.is_open()) {
-        cout << "Saving to file (recipient): " << text << endl;  // Debug output
-        recipientFile << text << endl;
+        string line;
+        while (getline(recipientFile, line)) {
+            if (line.find("From \"" + senderUsername + "\":") != string::npos) {
+                // Replace existing entry with the new will
+                receivedWills += "From \"" + senderUsername + "\":\n" + text;
+                senderEntryExists = true;
+                getline(recipientFile, line); // Skip the old will
+            }
+            else {
+                receivedWills += line + "\n";
+            }
+        }
         recipientFile.close();
+    }
+
+    // If sender's entry doesn't exist, append a new entry
+    if (!senderEntryExists) {
+        receivedWills += "From \"" + senderUsername + "\":\n" + text + "\n";
+    }
+
+    ofstream updatedRecipientFile(recipientFilename.c_str());
+    if (updatedRecipientFile.is_open()) {
+        updatedRecipientFile << receivedWills;
+        updatedRecipientFile.close();
     }
 }
 

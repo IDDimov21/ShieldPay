@@ -120,30 +120,19 @@ bool CheckCredentials() {
 
 void WriteFiles() {
     // Open files in append mode to keep existing data
-    bool checkIfAlreadyRegistered = false;
-    Usernames.open(dataFolderPath + "/usernames.txt", ios::app && ios::in);
+    Usernames.open(dataFolderPath + "/usernames.txt", ios::app);
     Passwords.open(dataFolderPath + "/passwords.txt", ios::app);
     Balances.open(dataFolderPath + "/balances.txt", ios::app);
 
     if (Usernames.is_open() && Passwords.is_open() && Balances.is_open() && registerPressed) {
-        while (getline(Usernames, usernameFromFile)) {
-            if (username == usernameFromFile) {
-                cout << "This username has already been used!" << endl;
-                checkIfAlreadyRegistered = true;
-                registerPressed = false;
-            }
-        }
-        if (!checkIfAlreadyRegistered) {
-            Usernames << username << endl;
-            Passwords << password << endl;
-            Balances << "100.0" << endl; //Starting balance = 100
-            cout << "Registered successfully!" << endl;
-            Usernames.close();  // Close immediately after writing
-            Passwords.close();
-            Balances.close();
-            registerPressed = false;
-        }
-
+        Usernames << username << endl;
+        Passwords << password << endl;
+        Balances << "100.0" << endl; //Starting balance = 100
+        cout << "Your account has been registered successfully!!" << endl;
+        Usernames.close();  // Close immediately after writing
+        Passwords.close();
+        Balances.close();
+        registerPressed = false;
     }
 }
 
