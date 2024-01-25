@@ -117,6 +117,20 @@ bool CheckCredentials() {
     return false; // Credentials do not match
 }
 
+bool IsUsernameExists(const string& newUsername) {
+    string existingUsername;
+    ifstream usernamesFile(dataFolderPath + "/usernames.txt");
+
+    while (getline(usernamesFile, existingUsername)) {
+        if (existingUsername == newUsername) {
+            usernamesFile.close();
+            return true; // Username already exists
+        }
+    }
+
+    usernamesFile.close();
+    return false; // Username does not exist
+}
 
 void WriteFiles() {
     // Open files in append mode to keep existing data
@@ -125,10 +139,18 @@ void WriteFiles() {
     Balances.open(dataFolderPath + "/balances.txt", ios::app);
 
     if (Usernames.is_open() && Passwords.is_open() && Balances.is_open() && registerPressed) {
-        Usernames << username << endl;
-        Passwords << password << endl;
-        Balances << "100.0" << endl; //Starting balance = 100
-        cout << "Your account has been registered successfully!!" << endl;
+        // Check if the username already exists
+        if (IsUsernameExists(username)) {
+            cout << "Error: Username already exists. Please choose a different username." << endl;
+        }
+        else {
+            // Write new account details to files
+            Usernames << username << endl;
+            Passwords << password << endl;
+            Balances << "100.0" << endl; // Starting balance = 100
+            cout << "Your account has been registered successfully!!" << endl;
+        }
+
         Usernames.close();  // Close immediately after writing
         Passwords.close();
         Balances.close();
@@ -224,7 +246,7 @@ void DrawApp() {
     DrawLoginBoxes();
 
     loginAndregisterProcess();
-    if(!loginPressed)
+    if (!loginPressed)
         EndDrawing();
 }
 
