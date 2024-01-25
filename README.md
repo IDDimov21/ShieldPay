@@ -2,7 +2,7 @@
 
 <h1 align = "center">🛡️ShieldPay🔒<h1>
 
-This app is used for banking transactions and its a made easy to understand app for people to use.
+This app is used for banking transactions and to bequeath something as its made easy to understand app for people to use.
 
  ## Our team:
 1. **Svilen  Todorov** - **Scrum trainer**	
